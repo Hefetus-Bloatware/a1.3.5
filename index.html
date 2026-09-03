@@ -1,0 +1,7597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>hefetus.win7</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    user-select:none;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    margin:0;
+    overflow:hidden;
+    background:#000;
+    font-family:"Segoe UI",Tahoma,Arial,sans-serif;
+}
+
+button,input,textarea{
+    font-family:"Segoe UI",Tahoma,Arial,sans-serif;
+}
+
+button{
+    cursor:pointer;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+#loadingScreen{
+    position:fixed;
+    inset:0;
+    z-index:50000;
+    background:#000;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    opacity:1;
+    transition:opacity 1.5s ease;
+}
+
+.loadingLogo{
+    font-size:42px;
+    font-weight:300;
+    letter-spacing:1px;
+    margin-bottom:28px;
+}
+
+.loadingLogo span{
+    font-weight:600;
+}
+
+.loadingSub{
+    color:#aaa;
+    font-size:14px;
+    margin-bottom:22px;
+}
+
+.loadingBar{
+    width:260px;
+    height:4px;
+    background:rgba(255,255,255,.15);
+    border-radius:4px;
+    overflow:hidden;
+}
+
+.loadingBarInner{
+    height:100%;
+    width:0;
+    background:#fff;
+    border-radius:4px;
+    animation:loadingProgress 4.8s ease forwards;
+}
+
+@keyframes loadingProgress{
+    0%{width:0}
+    35%{width:32%}
+    65%{width:69%}
+    85%{width:88%}
+    100%{width:100%}
+}
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+#loginScreen{
+    position:fixed;
+    inset:0;
+    z-index:40000;
+    background:url("./assets/images/windows7logon.jpg") center/cover no-repeat;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 1.4s ease,visibility 1.4s ease;
+}
+
+#loginScreen.visible{
+    opacity:1;
+    visibility:visible;
+}
+
+.loginOverlay{
+    position:absolute;
+    inset:0;
+    background:radial-gradient(
+        circle at center,
+        rgba(0,0,0,.02),
+        rgba(0,0,0,.22)
+    );
+}
+
+.loginCenter{
+    position:absolute;
+    left:50%;
+    top:45%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    color:#fff;
+    width:330px;
+}
+
+.loginAvatar{
+    width:112px;
+    height:112px;
+    object-fit:cover;
+    border-radius:8px;
+    border:2px solid rgba(255,255,255,.75);
+    box-shadow:
+        0 0 0 1px rgba(0,0,0,.5),
+        0 10px 35px rgba(0,0,0,.5);
+}
+
+.loginName{
+    font-size:28px;
+    font-weight:300;
+    margin-top:13px;
+    text-shadow:0 2px 5px #000;
+}
+
+.loginPasswordRow{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:13px;
+}
+
+#loginPassword{
+    width:215px;
+    height:34px;
+    padding:4px 10px;
+    border-radius:3px;
+    border:1px solid rgba(0,0,0,.55);
+    background:rgba(255,255,255,.96);
+    color:#222;
+    font-size:15px;
+    outline:none;
+    user-select:text;
+}
+
+.loginArrow{
+    margin-left:5px;
+    width:36px;
+    height:34px;
+    border:1px solid rgba(0,0,0,.45);
+    border-radius:3px;
+    background:linear-gradient(#fff,#d8d8d8);
+    color:#333;
+    font-size:18px;
+}
+
+.loginArrow:hover{
+    background:linear-gradient(#fff,#e9e9e9);
+}
+
+.loginError{
+    height:20px;
+    margin-top:9px;
+    color:#fff;
+    font-size:13px;
+    text-shadow:0 1px 4px #000;
+}
+
+.loginBottom{
+    position:absolute;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%);
+    color:#fff;
+    text-shadow:0 2px 4px #000;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:18px;
+}
+
+.loginBottom img{
+    width:34px;
+    height:34px;
+    object-fit:contain;
+}
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+#welcomeScreen{
+    position:fixed;
+    inset:0;
+    z-index:39000;
+    background:url("./assets/images/windows7logon.jpg") center/cover no-repeat;
+    opacity:0;
+    visibility:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    transition:opacity 1.3s ease,visibility 1.3s ease;
+}
+
+#welcomeScreen.visible{
+    opacity:1;
+    visibility:visible;
+}
+
+.welcomeText{
+    font-size:30px;
+    font-weight:300;
+    text-shadow:0 2px 8px #000;
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+#desktop{
+    position:fixed;
+    inset:0;
+    background:url("./assets/images/windows7.png") center/cover no-repeat;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 1.2s ease;
+}
+
+#desktop.visible{
+    opacity:1;
+    visibility:visible;
+}
+
+/* =========================================================
+   DESKTOP ICONS
+========================================================= */
+
+.desktopIcon{
+    position:absolute;
+    width:100px;
+    min-height:92px;
+    padding:5px;
+    text-align:center;
+    color:#fff;
+    font-size:12px;
+    text-shadow:
+        1px 1px 2px #000,
+        -1px -1px 1px rgba(0,0,0,.35);
+    border:1px solid transparent;
+    border-radius:3px;
+    z-index:20;
+    transition:
+        background .12s ease,
+        border-color .12s ease;
+}
+
+.desktopIcon:hover{
+    background:rgba(255,255,255,.12);
+    border-color:rgba(255,255,255,.25);
+}
+
+.desktopIcon.selected{
+    background:rgba(45,115,190,.45);
+    border-color:rgba(255,255,255,.5);
+}
+
+.desktopIcon img{
+    width:56px;
+    height:56px;
+    object-fit:contain;
+    display:block;
+    margin:0 auto 3px;
+}
+
+.desktopIcon span{
+    display:block;
+    word-break:break-word;
+}
+
+/* =========================================================
+   TASKBAR
+========================================================= */
+
+#taskbar{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:48px;
+    background:
+        linear-gradient(
+            rgba(25,45,60,.82),
+            rgba(10,25,38,.9)
+        );
+    border-top:1px solid rgba(255,255,255,.35);
+    box-shadow:0 -2px 10px rgba(0,0,0,.45);
+    z-index:1000;
+    display:flex;
+    align-items:center;
+}
+
+.startOrb{
+    width:58px;
+    height:48px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+}
+
+.startOrb:hover{
+    filter:brightness(1.25);
+}
+
+.startOrb img{
+    width:38px;
+    height:38px;
+    object-fit:contain;
+}
+
+#taskButtons{
+    display:flex;
+    align-items:center;
+    height:100%;
+    gap:2px;
+    margin-left:4px;
+}
+
+.taskButton{
+    width:46px;
+    height:42px;
+    border:1px solid transparent;
+    border-radius:4px;
+    background:transparent;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.taskButton:hover{
+    background:rgba(255,255,255,.13);
+    border-color:rgba(255,255,255,.2);
+}
+
+.taskButton img{
+    width:30px;
+    height:30px;
+    object-fit:contain;
+}
+
+#clock{
+    margin-left:auto;
+    min-width:82px;
+    text-align:center;
+    color:#fff;
+    font-size:12px;
+    text-shadow:0 1px 2px #000;
+}
+
+/* =========================================================
+   START MENU
+========================================================= */
+
+#startMenu{
+    position:absolute;
+    left:5px;
+    bottom:48px;
+    width:540px;
+    height:560px;
+    background:
+        linear-gradient(
+            rgba(40,70,95,.97),
+            rgba(18,36,53,.98)
+        );
+    border:1px solid rgba(255,255,255,.45);
+    border-radius:7px 7px 0 0;
+    box-shadow:0 0 25px rgba(0,0,0,.65);
+    z-index:2000;
+    overflow:hidden;
+    transform:translateY(15px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s ease,transform .18s ease;
+}
+
+#startMenu.open{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+.startTop{
+    height:75px;
+    display:flex;
+    align-items:center;
+    padding:10px;
+    border-bottom:1px solid rgba(255,255,255,.18);
+}
+
+.startTop img{
+    width:54px;
+    height:54px;
+    border-radius:5px;
+    object-fit:cover;
+    border:1px solid rgba(255,255,255,.7);
+}
+
+.startUser{
+    color:#fff;
+    font-size:17px;
+    margin-left:12px;
+}
+
+.startColumns{
+    display:grid;
+    grid-template-columns:1fr 180px;
+    height:425px;
+}
+
+.startApps{
+    padding:8px;
+    background:rgba(255,255,255,.06);
+    overflow:auto;
+}
+
+.startRight{
+    padding:10px;
+    border-left:1px solid rgba(255,255,255,.15);
+}
+
+.startItem{
+    min-height:42px;
+    display:flex;
+    align-items:center;
+    color:#fff;
+    border-radius:3px;
+    padding:5px;
+    cursor:pointer;
+}
+
+.startItem:hover{
+    background:rgba(255,255,255,.15);
+}
+
+.startItem img{
+    width:30px;
+    height:30px;
+    object-fit:contain;
+    margin-right:9px;
+}
+
+.startBottom{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    height:55px;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding:8px;
+    background:rgba(0,0,0,.16);
+}
+
+.shutdownButton{
+    height:34px;
+    min-width:110px;
+    border:1px solid rgba(0,0,0,.6);
+    border-radius:3px;
+    background:linear-gradient(#f4f4f4,#b9b9b9);
+    color:#111;
+}
+
+.shutdownButton:hover{
+    background:linear-gradient(#fff,#d0d0d0);
+}
+
+/* =========================================================
+   WINDOWS
+========================================================= */
+
+
+@keyframes win7PopupIn{
+    0%{
+        opacity:0;
+        transform:translate(-50%,-46%) scale(.96);
+        filter:blur(1px);
+    }
+    100%{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1);
+        filter:blur(0);
+    }
+}
+
+.window{
+    position:absolute;
+    min-width:320px;
+    min-height:180px;
+    background:#f3f3f3;
+    border:1px solid rgba(0,0,0,.65);
+    border-radius:7px;
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.55),
+        inset 0 0 0 1px rgba(255,255,255,.5);
+    overflow:hidden;
+    z-index:100;
+    opacity:0;
+    transform:scale(.97) translateY(8px);
+    transition:opacity .18s ease,transform .18s ease;
+}
+
+.window.visible{
+    opacity:1;
+    transform:scale(1) translateY(0);
+}
+
+.window.minimized{
+    opacity:0;
+    transform:scale(.96) translateY(30px);
+    pointer-events:none;
+}
+
+.window.maximized{
+    left:0!important;
+    top:0!important;
+    width:100%!important;
+    height:calc(100% - 48px)!important;
+}
+
+.titlebar{
+    height:35px;
+    background:
+        linear-gradient(
+            rgba(245,250,255,.95),
+            rgba(205,218,232,.92)
+        );
+    border-bottom:1px solid #8b99a7;
+    display:flex;
+    align-items:center;
+    padding-left:9px;
+}
+
+.titlebarIcon{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+    margin-right:7px;
+}
+
+.titleText{
+    flex:1;
+    font-size:13px;
+    color:#222;
+    text-shadow:0 1px #fff;
+}
+
+.windowControls{
+    display:flex;
+    height:100%;
+}
+
+.windowControl{
+    width:43px;
+    border:0;
+    background:transparent;
+    font-size:15px;
+    color:#222;
+}
+
+.windowControl:hover{
+    background:rgba(0,0,0,.08);
+}
+
+.windowControl.close:hover{
+    background:#d9534f;
+    color:#fff;
+}
+
+.windowBody{
+    height:calc(100% - 35px);
+    overflow:auto;
+    background:#fff;
+}
+
+.winButton{
+    border:1px solid #777;
+    border-radius:3px;
+    padding:5px 13px;
+    background:linear-gradient(#fff,#dedede);
+}
+
+.winButton:hover{
+    background:linear-gradient(#fff,#ededed);
+}
+
+.winButton:active{
+    background:#ccc;
+}
+
+/* =========================================================
+   FILE EXPLORER
+========================================================= */
+
+.explorerToolbar{
+    height:42px;
+    background:#eef2f6;
+    border-bottom:1px solid #ccd3da;
+    display:flex;
+    align-items:center;
+    padding:5px 8px;
+    gap:5px;
+}
+
+.explorerAddress{
+    flex:1;
+    height:28px;
+    border:1px solid #aaa;
+    background:#fff;
+    padding:5px 8px;
+}
+
+.explorerMain{
+    display:grid;
+    grid-template-columns:170px 1fr;
+    height:calc(100% - 42px);
+}
+
+.explorerSide{
+    background:#f4f7fa;
+    border-right:1px solid #d0d0d0;
+    padding:8px;
+}
+
+.explorerSideItem{
+    padding:8px;
+    cursor:pointer;
+    border-radius:3px;
+}
+
+.explorerSideItem:hover{
+    background:#dcecff;
+}
+
+.explorerFiles{
+    padding:15px;
+    display:flex;
+    flex-wrap:wrap;
+    align-content:flex-start;
+    gap:20px;
+}
+
+.fileItem{
+    width:100px;
+    text-align:center;
+    cursor:pointer;
+    padding:5px;
+    border:1px solid transparent;
+}
+
+.fileItem:hover{
+    background:#e6f2ff;
+    border-color:#b7d7f5;
+}
+
+.fileItem img{
+    width:52px;
+    height:52px;
+    object-fit:contain;
+    display:block;
+    margin:auto;
+}
+
+.fileItem div{
+    margin-top:5px;
+    font-size:12px;
+    word-break:break-word;
+}
+
+/* Games shortcuts use the same compact icon treatment as Explorer icons. */
+.gameShortcut{
+    width:100px;
+    text-align:center;
+    cursor:pointer;
+    padding:5px;
+    border:1px solid transparent;
+    box-sizing:border-box;
+}
+.gameShortcut:hover{
+    background:#e6f2ff;
+    border-color:#b7d7f5;
+}
+.gameShortcut img{
+    width:52px;
+    height:52px;
+    object-fit:contain;
+    display:block;
+    margin:auto;
+}
+.gameShortcut span{
+    display:block;
+    margin-top:5px;
+    font-size:12px;
+    word-break:break-word;
+}
+
+/* =========================================================
+   HEFPYKE MESSAGING
+========================================================= */
+
+.hefpykeApp{
+    height:100%;
+    display:flex;
+    background:#f4f6f8;
+    color:#222;
+    overflow:hidden;
+}
+
+.hefpykeSidebar{
+    width:235px;
+    background:linear-gradient(#f7fbff,#e7edf3);
+    border-right:1px solid #b8c5d0;
+    padding:10px;
+    box-sizing:border-box;
+}
+
+.hefpykeBrand{
+    font-size:22px;
+    font-weight:700;
+    color:#1d5d7a;
+    padding:8px 10px 14px;
+    text-shadow:0 1px #fff;
+}
+
+.hefpykeNav{
+    padding:10px;
+    margin:4px 0;
+    border:1px solid transparent;
+    border-radius:4px;
+    cursor:pointer;
+}
+
+.hefpykeNav:hover{
+    background:#dcecff;
+    border-color:#b7d7f5;
+}
+
+.hefpykeNav.active{
+    background:linear-gradient(#eaf5ff,#cfe4f7);
+    border-color:#9bbdd8;
+}
+
+.hefpykeMain{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+}
+
+.hefpykeHeader{
+    height:55px;
+    flex:none;
+    display:flex;
+    align-items:center;
+    padding:0 10px 0 18px;
+    box-sizing:border-box;
+    background:linear-gradient(#fff,#e7edf2);
+    border-bottom:1px solid #bcc7d0;
+    font-size:18px;
+    font-weight:600;
+}
+
+.hefpykeHeaderTitle{
+    flex:1;
+}
+
+.hefpykeMore{
+    width:34px;
+    height:34px;
+    border:1px solid transparent;
+    border-radius:4px;
+    background:transparent;
+    color:#333;
+    font-size:22px;
+    line-height:28px;
+    cursor:pointer;
+}
+
+.hefpykeMore:hover{
+    background:#dcecff;
+    border-color:#b7d7f5;
+}
+
+.hefpykeMenu{
+    position:absolute;
+    right:12px;
+    top:48px;
+    z-index:20;
+    min-width:180px;
+    background:#fff;
+    border:1px solid #9aa9b5;
+    box-shadow:0 5px 18px rgba(0,0,0,.28);
+    display:none;
+}
+
+.hefpykeMenuItem{
+    padding:10px 14px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.hefpykeMenuItem:hover{
+    background:#eaf4ff;
+}
+
+.hefpykeContact{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:15px;
+    background:#fff;
+    border:1px solid #c5cdd4;
+    border-radius:4px;
+    margin-bottom:8px;
+}
+
+.hefpykeContactAvatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    object-fit:cover;
+    border:1px solid #aab8c2;
+}
+
+.hefpykeContactInfo{
+    flex:1;
+}
+
+.hefpykeContactName{
+    font-weight:700;
+    font-size:16px;
+}
+
+.hefpykeContactNumber{
+    color:#777;
+    margin-top:3px;
+}
+
+.hefpykeCallButton{
+    padding:8px 14px;
+    border:1px solid #8aaeba;
+    border-radius:3px;
+    background:linear-gradient(#fff,#dceef8);
+    cursor:pointer;
+}
+
+.hefpykeCallButton:hover{
+    background:linear-gradient(#fff,#cce6f2);
+}
+
+.hefpykeCallNotice{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%) scale(.96);
+    opacity:0;
+    padding:22px 35px;
+    min-width:260px;
+    text-align:center;
+    background:linear-gradient(#fff,#edf2f6);
+    border:1px solid #718392;
+    box-shadow:0 12px 35px rgba(0,0,0,.4);
+    border-radius:4px;
+    z-index:50;
+    pointer-events:none;
+    transition:opacity .16s ease, transform .16s ease;
+}
+
+.hefpykeCallNotice.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+}
+
+.hefpykeMessages{
+    flex:1;
+    overflow:auto;
+    padding:18px;
+    background:#fafafa;
+}
+
+.hefpykeEmpty{
+    text-align:center;
+    color:#777;
+    margin-top:100px;
+}
+
+.hefpykeConversation{
+    border:1px solid #c5cdd4;
+    background:#fff;
+    margin-bottom:8px;
+    border-radius:4px;
+    overflow:hidden;
+}
+
+.hefpykeConversationTitle{
+    padding:12px 14px;
+    background:linear-gradient(#fff,#edf2f6);
+    border-bottom:1px solid #d0d7dd;
+    font-weight:700;
+}
+
+.hefpykeMessage{
+    max-width:75%;
+    padding:10px 13px;
+    margin:10px 0;
+    border-radius:5px;
+    line-height:1.35;
+    word-wrap:break-word;
+}
+
+.hefpykeMessage.ours{
+    margin-left:auto;
+    background:#dceffc;
+    border:1px solid #b8d6e8;
+}
+
+.hefpykeMessage.theirs{
+    margin-right:auto;
+    background:#f0f0f0;
+    border:1px solid #d2d2d2;
+}
+
+.hefpykeMessage.blank{
+    min-height:18px;
+    width:75px;
+    box-sizing:border-box;
+}
+
+.hefpykeArchiveList{
+    padding:0;
+}
+
+.hefpykeArchiveItem{
+    padding:13px;
+    background:#fff;
+    border-bottom:1px solid #ddd;
+    cursor:pointer;
+}
+
+.hefpykeArchiveItem:hover{
+    background:#eaf4ff;
+}
+
+.hefpykeNoMore{
+    margin-top:20px;
+    padding:15px;
+    text-align:center;
+    color:#777;
+    border-top:1px solid #ddd;
+}
+
+/* =========================================================
+   NOTEPAD / WORDPAD
+========================================================= */
+
+.notepadBody{
+    height:100%;
+    display:flex;
+}
+
+#notepadText,
+#wordpadText{
+    resize:none;
+    border:0;
+    outline:none;
+    width:100%;
+    height:100%;
+    padding:8px;
+    font-family:Consolas,monospace;
+    font-size:14px;
+    user-select:text;
+}
+
+.wordpadBody{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+}
+
+.wordpadToolbar{
+    height:42px;
+    background:#eee;
+    border-bottom:1px solid #bbb;
+    padding:5px;
+}
+
+/* =========================================================
+   CALCULATOR
+========================================================= */
+
+.calculator{
+    width:100%;
+    height:100%;
+    padding:12px;
+    background:#e9edf1;
+}
+
+#calcDisplay{
+    width:100%;
+    height:50px;
+    margin-bottom:10px;
+    text-align:right;
+    font-size:23px;
+    padding:5px 8px;
+    border:1px solid #888;
+    background:#fff;
+}
+
+.calcGrid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+}
+
+.calcGrid button{
+    height:45px;
+    font-size:16px;
+    border:1px solid #888;
+    background:linear-gradient(#fff,#ddd);
+    border-radius:3px;
+}
+
+.calcGrid button:hover{
+    background:#fff;
+}
+
+/* =========================================================
+   PAINT
+========================================================= */
+
+.paintTools{
+    height:48px;
+    background:#eee;
+    border-bottom:1px solid #bbb;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:6px;
+}
+
+#paintCanvas{
+    display:block;
+    background:#fff;
+    cursor:crosshair;
+}
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+.musicPlayer{
+    height:100%;
+    background:linear-gradient(#eef4f8,#d8e0e7);
+    padding:18px;
+}
+
+.musicDisplay{
+    background:#101820;
+    color:#79d6ff;
+    border-radius:4px;
+    padding:15px;
+    font-family:Consolas,monospace;
+    margin-bottom:14px;
+    min-height:70px;
+}
+
+.musicTitle{
+    font-size:18px;
+}
+
+.musicControls{
+    display:flex;
+    gap:7px;
+    margin-bottom:14px;
+}
+
+.musicControls button{
+    width:55px;
+    height:35px;
+}
+
+.musicProgress{
+    width:100%;
+}
+
+.musicVolume{
+    width:150px;
+}
+
+.songList{
+    margin-top:15px;
+    background:#fff;
+    border:1px solid #aaa;
+    height:170px;
+    overflow:auto;
+}
+
+.song{
+    padding:8px;
+    cursor:pointer;
+    border-bottom:1px solid #ddd;
+}
+
+.song:hover{
+    background:#e6f2ff;
+}
+
+.song.active{
+    background:#cce5ff;
+}
+
+/* =========================================================
+   BROWSER
+========================================================= */
+
+.browserToolbar{
+    height:48px;
+    display:flex;
+    gap:6px;
+    padding:7px;
+    background:#ececec;
+    border-bottom:1px solid #aaa;
+}
+
+#browserAddress{
+    flex:1;
+    height:32px;
+    padding:4px 8px;
+    border:1px solid #888;
+    user-select:text;
+}
+
+#browserPage{
+    height:calc(100% - 48px);
+    padding:25px;
+    overflow:auto;
+    background:#fff;
+}
+
+/* =========================================================
+   RECYCLE
+========================================================= */
+
+.recycleContents{
+    padding:15px;
+}
+
+.fileRow{
+    display:flex;
+    align-items:center;
+    min-height:55px;
+    padding:7px;
+    border-bottom:1px solid #ddd;
+}
+
+.fileRow img{
+    width:38px;
+    height:38px;
+    object-fit:contain;
+    margin-right:10px;
+}
+
+/* =========================================================
+   MEDIA CENTER
+========================================================= */
+
+.mediaCenter{
+    height:100%;
+    background:
+        linear-gradient(
+            135deg,
+            #071522,
+            #0d3a57,
+            #06111c
+        );
+    color:#fff;
+    padding:25px;
+}
+
+.mediaCenter h1{
+    font-size:32px;
+    font-weight:300;
+}
+
+.mediaTileGrid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.mediaTile{
+    padding:25px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.25);
+    border-radius:5px;
+    font-size:18px;
+}
+
+/* =========================================================
+   DVD MAKER
+========================================================= */
+
+.dvdMaker{
+    padding:20px;
+    background:#f5f5f5;
+    height:100%;
+}
+
+.dvdProject{
+    border:1px solid #aaa;
+    background:#fff;
+    padding:20px;
+    min-height:180px;
+}
+
+.dvdProgress{
+    width:100%;
+    height:18px;
+}
+
+/* =========================================================
+   STICKY NOTES
+========================================================= */
+
+.stickyWindow{
+    background:#fff9a8;
+    height:100%;
+    padding:20px;
+}
+
+.stickyText{
+    width:100%;
+    height:100%;
+    border:0;
+    outline:0;
+    resize:none;
+    background:#fff9a8;
+    font-family:"Segoe UI",sans-serif;
+    font-size:18px;
+    user-select:text;
+}
+
+/* =========================================================
+   SYSTEM PROPERTIES
+========================================================= */
+
+.systemProperties{
+    padding:20px;
+    background:#f5f5f5;
+    height:100%;
+}
+
+.systemLogo{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    border-bottom:1px solid #ccc;
+    padding-bottom:15px;
+    margin-bottom:15px;
+}
+
+.systemLogo img{
+    width:64px;
+    height:64px;
+}
+
+.specRow{
+    padding:7px 0;
+    border-bottom:1px solid #ddd;
+}
+
+/* =========================================================
+   COMMAND PROMPT
+========================================================= */
+
+.cmdWindow{
+    height:100%;
+    background:#000;
+    color:#fff;
+    font-family:Consolas,"Courier New",monospace;
+    display:flex;
+    flex-direction:column;
+}
+
+.cmdOutput{
+    flex:1;
+    overflow:auto;
+    padding:10px;
+    white-space:pre-wrap;
+    user-select:text;
+}
+
+.cmdInputRow{
+    display:flex;
+    padding:6px 10px;
+}
+
+.cmdPrompt{
+    white-space:pre;
+}
+
+#cmdInput{
+    flex:1;
+    background:#000;
+    color:#fff;
+    border:0;
+    outline:0;
+    font-family:inherit;
+    user-select:text;
+}
+
+/* =========================================================
+   HEFETUS POPUP
+========================================================= */
+
+#hefetusPopup{
+    position:fixed;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:420px;
+    background:#eee;
+    border:1px solid #555;
+    box-shadow:
+        0 12px 45px rgba(0,0,0,.7);
+    z-index:30000;
+    display:none;
+    border-radius:4px;
+    overflow:hidden;
+}
+
+.hefetusPopupTitle{
+    height:36px;
+    display:flex;
+    align-items:center;
+    padding:0 10px;
+    background:
+        linear-gradient(
+            #f8fbff,
+            #cbdbea
+        );
+    border-bottom:1px solid #899aaa;
+    color:#111;
+    font-size:13px;
+    font-weight:600;
+}
+
+.hefetusPopupTitle span{
+    flex:1;
+}
+
+.hefetusPopupBody{
+    padding:25px;
+    text-align:center;
+    color:#111;
+}
+
+.hefetusPopupBody img{
+    width:120px;
+    height:120px;
+    object-fit:contain;
+}
+
+.popupOK{
+    margin-top:15px;
+}
+
+/* =========================================================
+   CHAOS
+========================================================= */
+
+#hefetusChaos{
+    position:fixed;
+    inset:0;
+    z-index:35000;
+    display:none;
+    overflow:hidden;
+    background:rgba(0,0,0,.12);
+}
+
+.chaosPopup{
+    position:absolute;
+    width:380px;
+    min-height:150px;
+    background:#eee;
+    border:1px solid #555;
+    box-shadow:0 5px 20px rgba(0,0,0,.65);
+    animation:chaosAppear .12s ease;
+}
+
+@keyframes chaosAppear{
+    from{
+        opacity:0;
+        transform:scale(.8);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.chaosPopupTitle{
+    height:36px;
+    background:
+        linear-gradient(
+            #f8fbff,
+            #cbdbea
+        );
+    border-bottom:1px solid #899aaa;
+}
+
+.chaosPopupBody{
+    padding:28px 15px;
+    text-align:center;
+    font-size:17px;
+    color:#111;
+}
+
+/* =========================================================
+   DISK ERROR
+========================================================= */
+
+#diskErrorLayer{
+    position:fixed;
+    inset:0;
+    z-index:45000;
+    pointer-events:none;
+    display:none;
+}
+
+.diskErrorPopup{
+    position:absolute;
+    width:410px;
+    background:#eee;
+    border:1px solid #555;
+    box-shadow:0 8px 25px rgba(0,0,0,.7);
+    animation:diskErrorIn .1s ease;
+}
+
+@keyframes diskErrorIn{
+    from{
+        transform:scale(.8);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+.diskErrorTitle{
+    height:36px;
+    padding:9px 12px;
+    background:
+        linear-gradient(
+            #f8fbff,
+            #cbdbea
+        );
+    border-bottom:1px solid #899aaa;
+    color:#111;
+    font-size:13px;
+}
+
+.diskErrorBody{
+    padding:24px;
+    color:#111;
+    text-align:center;
+}
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+#notification{
+    position:absolute;
+    right:18px;
+    bottom:63px;
+    min-width:230px;
+    padding:11px 14px;
+    background:rgba(25,35,45,.94);
+    border:1px solid rgba(255,255,255,.3);
+    color:#fff;
+    border-radius:4px;
+    box-shadow:0 5px 20px rgba(0,0,0,.4);
+    z-index:15000;
+    opacity:0;
+    transform:translateY(10px);
+    pointer-events:none;
+    transition:opacity .2s ease,transform .2s ease;
+}
+
+#notification.visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* =========================================================
+   SHUTDOWN
+========================================================= */
+
+#shutdownScreen{
+    position:fixed;
+    inset:0;
+    z-index:60000;
+    background:#000;
+    color:#fff;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+}
+
+.shutdownText{
+    font-size:24px;
+    font-weight:300;
+}
+
+.shutdownSub{
+    margin-top:14px;
+    color:#aaa;
+    font-size:13px;
+}
+
+/* =========================================================
+   VIRUS
+========================================================= */
+
+#hefglesRainbow{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:99990;
+    mix-blend-mode:screen;
+}
+
+#hefglesVirusPage{
+    position:absolute;
+    inset:0;
+    background:#000;
+    color:#fff;
+    overflow:hidden;
+    text-align:center;
+}
+
+.virusWarning{
+    font-size:42px;
+    font-weight:bold;
+    padding-top:45px;
+    color:red;
+}
+
+.virusHefetus img{
+    width:190px;
+    height:190px;
+    object-fit:contain;
+    margin-top:25px;
+}
+
+.virusText{
+    font-size:28px;
+    font-weight:bold;
+    margin-top:20px;
+}
+
+.virusSmall{
+    margin-top:15px;
+    font-size:13px;
+    color:#aaa;
+}
+
+@media(max-width:700px){
+    .window{
+        min-width:0;
+        width:92%!important;
+        left:4%!important;
+    }
+
+    #startMenu{
+        width:95%;
+        left:2.5%;
+    }
+}
+
+/* =========================================================
+   LEAKS ADMINISTRATOR SECURITY
+========================================================= */
+
+#leaksAuthOverlay{
+    position:fixed;
+    inset:0;
+    z-index:200000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.18);
+    opacity:0;
+    transition:opacity .18s ease;
+}
+
+#leaksAuthOverlay.leaksAuthVisible{
+    opacity:1;
+}
+
+@keyframes leaksAdminPopIn{
+    0%{
+        opacity:0;
+        transform:translateY(12px) scale(.94);
+        filter:blur(1px);
+    }
+    65%{
+        opacity:1;
+        transform:translateY(-2px) scale(1.01);
+        filter:blur(0);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+    }
+}
+
+.leaksAuthWindow{
+    width:520px;
+    transform-origin:center center;
+    max-width:90vw;
+    background:#f4f7fa;
+    border:1px solid #55758b;
+    border-radius:7px;
+    overflow:hidden;
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.45),
+        inset 0 1px rgba(255,255,255,.9);
+    color:#1d3948;
+}
+
+.leaksAuthTitle{
+    height:42px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:0 7px 0 10px;
+    background:
+        linear-gradient(
+            #fafdff,
+            #d8eaf2 50%,
+            #a9cddd
+        );
+    border-bottom:1px solid #7899a9;
+    font-size:15px;
+    font-weight:600;
+}
+
+.leaksAuthTitle img{
+    width:24px;
+    height:24px;
+    object-fit:contain;
+}
+
+.leaksAuthTitle span{
+    flex:1;
+}
+
+.leaksAuthBody{
+    display:flex;
+    gap:20px;
+    padding:28px 30px 20px;
+    background:linear-gradient(#fff,#f5f8fa);
+}
+
+.leaksShield{
+    width:52px;
+    height:52px;
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+    color:#d48b00;
+}
+
+.leaksAuthContent{
+    flex:1;
+}
+
+.leaksAuthContent h3{
+    margin:0 0 8px;
+    font-size:20px;
+    font-weight:400;
+}
+
+.leaksAuthContent p{
+    margin:0 0 17px;
+    line-height:1.45;
+}
+
+.leaksAuthContent label{
+    display:block;
+    margin:9px 0 4px;
+    font-size:13px;
+}
+
+.leaksAuthContent input{
+    width:100%;
+    box-sizing:border-box;
+    height:31px;
+    border:1px solid #8ba8b6;
+    border-radius:3px;
+    padding:4px 8px;
+    background:#fff;
+    color:#222;
+    outline:none;
+    user-select:text;
+}
+
+.leaksAuthContent input:focus{
+    border-color:#3d91bd;
+    box-shadow:0 0 3px rgba(35,135,185,.45);
+}
+
+.leaksAuthError{
+    min-height:19px;
+    margin-top:8px;
+    color:#b00000;
+    font-size:13px;
+}
+
+.leaksAuthButtons{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    padding:0 25px 22px;
+    background:#f5f7f9;
+}
+
+.leaksUnlockedBanner{
+    margin:10px;
+    padding:12px 15px;
+    border:1px solid #a9c8d4;
+    border-radius:4px;
+    background:linear-gradient(#f7ffff,#dff2f7);
+    color:#21495b;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     LOADING
+========================================================= -->
+
+<div id="loadingScreen">
+    <div class="loadingLogo">
+        <span>hefetus</span>.win7
+    </div>
+
+    <div class="loadingSub">
+        Starting Windows
+    </div>
+
+    <div class="loadingBar">
+        <div class="loadingBarInner"></div>
+    </div>
+</div>
+
+<!-- =========================================================
+     LOGIN
+========================================================= -->
+
+<div id="loginScreen">
+
+    <div class="loginOverlay"></div>
+
+    <div class="loginCenter">
+
+        <img
+            class="loginAvatar"
+            src="./assets/images/hefetus.png"
+            alt=""
+        >
+
+        <div class="loginName">
+            Hefetus092
+        </div>
+
+        <div class="loginPasswordRow">
+
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="Password"
+                autocomplete="off"
+            >
+
+            <button
+                class="loginArrow"
+                id="loginButton"
+            >
+                →
+            </button>
+
+        </div>
+
+        <div
+            id="loginError"
+            class="loginError"
+        ></div>
+
+    </div>
+
+    <div class="loginBottom">
+
+        <img
+            src="./assets/images/hefetus.png"
+            alt=""
+        >
+
+        <span>hefetus.win7</span>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     WELCOME
+========================================================= -->
+
+<div id="welcomeScreen">
+    <div class="welcomeText">
+        Welcome
+    </div>
+</div>
+
+<!-- =========================================================
+     DESKTOP
+========================================================= -->
+
+<div id="desktop">
+
+    <!-- COMPUTER -->
+
+    <div
+        class="desktopIcon"
+        id="computerIcon"
+        data-type="computer"
+        data-name="Computer"
+        style="left:20px;top:20px"
+    >
+        <img
+            src="./assets/images/computer.ico"
+            alt=""
+        >
+        <span>Computer</span>
+    </div>
+
+    <!-- FILE EXPLORER -->
+
+    <div
+        class="desktopIcon"
+        data-type="explorer"
+        data-name="File Explorer"
+        style="left:20px;top:125px"
+    >
+        <img
+            src="./assets/images/file explorer.png"
+            alt=""
+        >
+        <span>File Explorer</span>
+    </div>
+
+    <!-- HEFPYKE -->
+
+    <div
+        class="desktopIcon"
+        data-type="hefpyke"
+        data-name="Hefpyke"
+        style="left:20px;top:440px"
+    >
+        <img
+            src="./assets/images/hefetus.png"
+            alt=""
+        >
+        <span>Hefpyke</span>
+    </div>
+
+    <!-- NOTEPAD -->
+
+    <div
+        class="desktopIcon"
+        data-type="notepad"
+        data-name="Notepad"
+        style="left:20px;top:230px"
+    >
+        <img
+            src="./assets/images/notepad.ico"
+            alt=""
+        >
+        <span>Notepad</span>
+    </div>
+
+    <!-- PAINT -->
+
+    <div
+        class="desktopIcon"
+        data-type="paint"
+        data-name="Paint"
+        style="left:20px;top:335px"
+    >
+        <img
+            src="./assets/images/paint.ico"
+            alt=""
+        >
+        <span>Paint</span>
+    </div>
+
+    <!-- CALCULATOR -->
+
+    <div
+        class="desktopIcon"
+        data-type="calculator"
+        data-name="Calculator"
+        style="left:125px;top:20px"
+    >
+        <img
+            src="./assets/images/calculator.ico"
+            alt=""
+        >
+        <span>Calculator</span>
+    </div>
+
+    <!-- MUSIC -->
+
+    <div
+        class="desktopIcon"
+        data-type="music"
+        data-name="Windows Media Player"
+        style="left:125px;top:125px"
+    >
+        <img
+            src="./assets/images/music disk.ico"
+            alt=""
+        >
+        <span>Windows Media Player</span>
+    </div>
+
+    <!-- INTERNET EXPLORER -->
+
+    <div
+        class="desktopIcon"
+        data-type="browser"
+        data-name="Internet Explorer"
+        style="left:125px;top:230px"
+    >
+        <img
+            src="./assets/images/Internet Explorer.ico"
+            alt=""
+        >
+        <span>Internet Explorer</span>
+    </div>
+
+    <!-- HEFETUS -->
+
+    <div
+        class="desktopIcon"
+        data-type="hefetus"
+        data-name="Hefetus"
+        style="left:125px;top:335px"
+    >
+        <img
+            src="./assets/images/hefetus.png"
+            alt=""
+        >
+        <span>Hefetus</span>
+    </div>
+
+    <!-- DVD MAKER -->
+
+    <div
+        class="desktopIcon"
+        data-type="dvdmaker"
+        data-name="Windows DVD Maker"
+        style="left:230px;top:20px"
+    >
+        <img
+            src="./assets/images/optical drive.ico"
+            alt=""
+        >
+        <span>Windows DVD Maker</span>
+    </div>
+
+    <!-- MEDIA CENTER -->
+
+    <div
+        class="desktopIcon"
+        data-type="mediacenter"
+        data-name="Windows Media Center"
+        style="left:230px;top:125px"
+    >
+        <img
+            src="./assets/images/media center.png"
+            alt=""
+        >
+        <span>Windows Media Center</span>
+    </div>
+
+    <!-- WORDPAD -->
+
+    <div
+        class="desktopIcon"
+        data-type="wordpad"
+        data-name="WordPad"
+        style="left:230px;top:230px"
+    >
+        <img
+            src="./assets/images/WordPad.png"
+            alt=""
+        >
+        <span>WordPad</span>
+    </div>
+
+    <!-- STICKY NOTES -->
+
+    <div
+        class="desktopIcon"
+        data-type="sticky"
+        data-name="Sticky Notes"
+        style="left:230px;top:335px"
+    >
+        <img
+            src="./assets/images/Sticky Notes.png"
+            alt=""
+        >
+        <span>Sticky Notes</span>
+    </div>
+
+    <!-- COMMAND PROMPT -->
+
+    <div
+        class="desktopIcon"
+        data-type="cmd"
+        data-name="Command Prompt"
+        style="left:335px;top:20px"
+    >
+        <img
+            src="./assets/images/cmd.ico"
+            alt=""
+        >
+        <span>Command Prompt</span>
+    </div>
+
+    <!-- SYSTEM PROPERTIES -->
+
+    <div
+        class="desktopIcon"
+        data-type="system"
+        data-name="System Properties"
+        style="left:335px;top:125px"
+    >
+        <img
+            src="./assets/images/computer.ico"
+            alt=""
+        >
+        <span>System Properties</span>
+    </div>
+
+    <!-- GAMES -->
+
+    <div
+        class="desktopIcon"
+        data-type="games"
+        data-name="Games"
+        style="left:335px;top:230px"
+    >
+        <img
+            src="./assets/images/Windows 7 Folder Bronze.ico"
+            alt=""
+        >
+        <span>Games</span>
+    </div>
+
+    <!-- NEW FOLDER -->
+
+    <div
+        class="desktopIcon"
+        data-type="folder"
+        data-name="New Folder"
+        style="left:335px;top:335px"
+    >
+        <img
+            src="./assets/images/Windows 7 Folder Bronze.ico"
+            alt=""
+        >
+        <span>New Folder</span>
+    </div>
+
+    <!-- RECYCLE BIN -->
+
+    <div
+        class="desktopIcon"
+        id="recycleIcon"
+        data-type="recycle"
+        data-name="Recycle Bin"
+        style="right:20px;top:20px"
+    >
+        <img
+            id="recycleImage"
+            src="./assets/images/empty recycle bin.ico"
+            alt=""
+        >
+        <span>Recycle Bin</span>
+    </div>
+
+    <!-- =====================================================
+         START MENU
+    ====================================================== -->
+
+    <div id="startMenu">
+
+        <div class="startTop">
+
+            <img
+                src="./assets/images/hefetus.png"
+                alt=""
+            >
+
+            <div class="startUser">
+                Hefetus092
+            </div>
+
+        </div>
+
+        <div class="startColumns">
+
+            <div class="startApps">
+
+                <div class="startItem" data-open="computer">
+                    <img src="./assets/images/computer.ico">
+                    Computer
+                </div>
+
+                <div class="startItem" data-open="explorer">
+                    <img src="./assets/images/file explorer.png">
+                    File Explorer
+                </div>
+
+                <div class="startItem" data-open="notepad">
+                    <img src="./assets/images/notepad.ico">
+                    Notepad
+                </div>
+
+                <div class="startItem" data-open="paint">
+                    <img src="./assets/images/paint.ico">
+                    Paint
+                </div>
+
+                <div class="startItem" data-open="calculator">
+                    <img src="./assets/images/calculator.ico">
+                    Calculator
+                </div>
+
+                <div class="startItem" data-open="music">
+                    <img src="./assets/images/music disk.ico">
+                    Windows Media Player
+                </div>
+
+                <div class="startItem" data-open="browser">
+                    <img src="./assets/images/Internet Explorer.ico">
+                    Internet Explorer
+                </div>
+
+                <div class="startItem" data-open="dvdmaker">
+                    <img src="./assets/images/optical drive.ico">
+                    Windows DVD Maker
+                </div>
+
+                <div class="startItem" data-open="mediacenter">
+                    <img src="./assets/images/media center.png">
+                    Windows Media Center
+                </div>
+
+                <div class="startItem" data-open="wordpad">
+                    <img src="./assets/images/WordPad.png">
+                    WordPad
+                </div>
+
+                <div class="startItem" data-open="sticky">
+                    <img src="./assets/images/Sticky Notes.png">
+                    Sticky Notes
+                </div>
+
+                <div class="startItem" data-open="cmd">
+                    <img src="./assets/images/cmd.ico">
+                    Command Prompt
+                </div>
+
+                <div class="startItem" data-open="hefpyke">
+                    <img src="./assets/images/hefetus.png">
+                    Hefpyke
+                </div>
+
+                <div class="startItem" data-open="system">
+                    <img src="./assets/images/computer.ico">
+                    System Properties
+                </div>
+
+            </div>
+
+            <div class="startRight">
+
+                <div class="startItem" data-open="recycle">
+                    <img
+                        id="menuRecycleImage"
+                        src="./assets/images/empty recycle bin.ico"
+                    >
+                    Recycle Bin
+                </div>
+
+                <div class="startItem" data-open="computer">
+                    Computer
+                </div>
+
+                <div class="startItem" data-open="explorer">
+                    Documents
+                </div>
+
+                <div class="startItem" data-open="explorer">
+                    Pictures
+                </div>
+
+                <div class="startItem" data-open="music">
+                    Music
+                </div>
+
+                <div class="startItem" data-open="system">
+                    Control Panel
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="startBottom">
+
+            <button
+                class="shutdownButton"
+                id="shutdownButton"
+            >
+                Shut down
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         TASKBAR
+    ====================================================== -->
+
+    <div id="taskbar">
+
+        <div
+            class="startOrb"
+            id="startOrb"
+        >
+            <img
+                src="./assets/images/windows xp classic.ico"
+                alt=""
+            >
+        </div>
+
+        <div id="taskButtons"></div>
+
+        <div id="clock"></div>
+
+    </div>
+
+    <!-- CONTEXT MENU -->
+
+    <div id="contextMenu">
+
+        <div class="contextItem" id="refreshDesktop">
+            Refresh
+        </div>
+
+        <div class="contextItem" id="newFolder">
+            New Folder
+        </div>
+
+        <div class="contextItem" id="toggleIcons">
+            Show desktop icons
+        </div>
+
+        <div class="contextItem" id="openExplorerContext">
+            Open File Explorer
+        </div>
+
+    </div>
+
+    <div id="notification"></div>
+
+</div>
+
+<!-- =========================================================
+     HEFETUS POPUP
+========================================================= -->
+
+<div id="hefetusPopup">
+
+    <div class="hefetusPopupTitle">
+
+        <span>
+            Hefetus
+        </span>
+
+        <button
+            class="windowControl close"
+            onclick="closePopup()"
+        >
+            ×
+        </button>
+
+    </div>
+
+    <div class="hefetusPopupBody">
+
+        <img
+            src="./assets/images/hefetus.png"
+            alt=""
+        >
+
+        <p>
+            <strong>HEFETUS IS WATCHING.</strong>
+        </p>
+
+        <button
+            class="winButton popupOK"
+            onclick="closePopup()"
+        >
+            OK
+        </button>
+
+    </div>
+
+</div>
+
+<!-- CHAOS -->
+
+<div id="hefetusChaos"></div>
+
+<!-- DISK ERRORS -->
+
+<div id="diskErrorLayer"></div>
+
+<!-- SHUTDOWN -->
+
+<div id="shutdownScreen">
+
+    <div
+        class="shutdownText"
+        id="shutdownText"
+    >
+        Windows is shutting down.
+    </div>
+
+    <div class="shutdownSub">
+        Please wait...
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let highestZ = 100;
+
+let draggedIcon = null;
+
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
+let diskDeleted = false;
+let computerDeleted = false;
+let chaosRunning = false;
+let hefglesVirusRunning = false;
+
+let trashItems = [];
+
+let notificationTimer = null;
+
+let musicPlayer = null;
+let musicIndex = 0;
+
+let hefglesRainbowTimer = null;
+
+const windows = {};
+
+const desktop =
+    document.getElementById("desktop");
+
+const startMenu =
+    document.getElementById("startMenu");
+
+const contextMenu =
+    document.getElementById("contextMenu");
+
+/* =========================================================
+   SOUND SYSTEM
+========================================================= */
+
+const soundCache = {};
+
+const soundExtensions = [
+    ".wav",
+    ".mp3",
+    ".ogg",
+    ".m4a"
+];
+
+function playSound(name,volume=.65){
+
+    if(diskDeleted)
+        return;
+
+    if(
+        soundCache[name] &&
+        soundCache[name].audio
+    ){
+
+        const audio =
+            soundCache[name].audio;
+
+        audio.pause();
+        audio.currentTime=0;
+        audio.volume=volume;
+
+        audio.play().catch(()=>{});
+
+        return;
+    }
+
+    let extensionIndex=0;
+
+    const audio=new Audio();
+
+    audio.volume=volume;
+
+    function tryNext(){
+
+        if(
+            extensionIndex >=
+            soundExtensions.length
+        )
+            return;
+
+        const src =
+            "./assets/sounds/" +
+            name +
+            soundExtensions[
+                extensionIndex
+            ];
+
+        extensionIndex++;
+
+        audio.src=src;
+
+        audio.onerror=()=>{
+            tryNext();
+        };
+
+        audio.oncanplaythrough=()=>{
+
+            soundCache[name]={
+                audio:audio
+            };
+
+            audio.play().catch(()=>{});
+        };
+
+        audio.load();
+    }
+
+    tryNext();
+}
+
+/* =========================================================
+   OPEN START SOUND
+========================================================= */
+
+function playOpenStart(){
+
+    const audio =
+        new Audio(
+            "./assets/sounds/Open Start.mp3"
+        );
+
+    audio.volume=.75;
+
+    audio.play().catch(()=>{
+
+        const resume=()=>{
+
+            audio.play().catch(()=>{});
+
+            document.removeEventListener(
+                "pointerdown",
+                resume
+            );
+
+            document.removeEventListener(
+                "keydown",
+                resume
+            );
+        };
+
+        document.addEventListener(
+            "pointerdown",
+            resume,
+            {once:true}
+        );
+
+        document.addEventListener(
+            "keydown",
+            resume,
+            {once:true}
+        );
+    });
+}
+
+/* =========================================================
+   LOADING -> LOGIN
+========================================================= */
+
+let loadingFinished=false;
+
+function finishLoading(){
+
+    if(loadingFinished)
+        return;
+
+    loadingFinished=true;
+
+    const loading =
+        document.getElementById(
+            "loadingScreen"
+        );
+
+    const login =
+        document.getElementById(
+            "loginScreen"
+        );
+
+    playOpenStart();
+
+    loading.style.opacity="0";
+
+    setTimeout(()=>{
+
+        loading.classList.add("hidden");
+
+        login.classList.add("visible");
+
+    },1500);
+}
+
+setTimeout(
+    finishLoading,
+    5000
+);
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+const password =
+    document.getElementById(
+        "loginPassword"
+    );
+
+const loginButton =
+    document.getElementById(
+        "loginButton"
+    );
+
+const loginError =
+    document.getElementById(
+        "loginError"
+    );
+
+function attemptLogin(){
+
+    if(
+        password.value ===
+        "hefgleshu65"
+    ){
+
+        loginError.textContent="";
+
+        password.blur();
+
+        playSound(
+            "Windows Logon Sound",
+            .65
+        );
+
+        const login =
+            document.getElementById(
+                "loginScreen"
+            );
+
+        const welcome =
+            document.getElementById(
+                "welcomeScreen"
+            );
+
+        login.style.opacity="0";
+
+        setTimeout(()=>{
+
+            login.classList.remove(
+                "visible"
+            );
+
+            welcome.classList.add(
+                "visible"
+            );
+
+        },1100);
+
+        setTimeout(()=>{
+
+            welcome.style.opacity="0";
+
+            setTimeout(()=>{
+
+                welcome.classList.remove(
+                    "visible"
+                );
+
+                showDesktop();
+
+            },1100);
+
+        },1900);
+
+    }else{
+
+        loginError.textContent =
+            "The password is incorrect.";
+
+        playSound(
+            "error",
+            .7
+        );
+
+        password.select();
+    }
+}
+
+loginButton.addEventListener(
+    "click",
+    attemptLogin
+);
+
+password.addEventListener(
+    "keydown",
+    e=>{
+
+        if(e.key==="Enter")
+            attemptLogin();
+
+    }
+);
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+function showDesktop(){
+
+    desktop.classList.add(
+        "visible"
+    );
+
+    playSound(
+        "Windows Startup",
+        .55
+    );
+
+    updateClock();
+
+    showNotification(
+        "Welcome, Hefetus092"
+    );
+}
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock(){
+
+    const clock =
+        document.getElementById(
+            "clock"
+        );
+
+    clock.textContent =
+        new Date().toLocaleTimeString(
+            [],
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+}
+
+setInterval(
+    updateClock,
+    1000
+);
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+function showNotification(message){
+
+    if(diskDeleted)
+        return;
+
+    const notification =
+        document.getElementById(
+            "notification"
+        );
+
+    notification.textContent=message;
+
+    notification.classList.add(
+        "visible"
+    );
+
+    clearTimeout(
+        notificationTimer
+    );
+
+    notificationTimer=
+        setTimeout(()=>{
+
+            notification.classList.remove(
+                "visible"
+            );
+
+        },2200);
+
+    playSound(
+        "Windows Notify",
+        .4
+    );
+}
+
+/* =========================================================
+   WINDOW CREATION
+========================================================= */
+
+function createWindow(
+    type,
+    title,
+    icon,
+    width,
+    height,
+    bodyHTML
+){
+
+    if(diskDeleted){
+
+        diskError();
+
+        return;
+    }
+
+    if(windows[type]){
+
+        const existing=
+            windows[type];
+
+        existing.classList.remove(
+            "minimized"
+        );
+
+        existing.style.zIndex=
+            ++highestZ;
+
+        playSound(
+            "Windows Navigation",
+            .35
+        );
+
+        return existing;
+    }
+
+    const win=
+        document.createElement(
+            "div"
+        );
+
+    win.className="window";
+
+    win.dataset.type=type;
+
+    const count=
+        Object.keys(windows).length;
+
+    const left=
+        Math.max(
+            20,
+            (window.innerWidth-width)/2+
+            count*20
+        );
+
+    const top=
+        Math.max(
+            20,
+            (window.innerHeight-height)/2+
+            count*15
+        );
+
+    win.style.width=
+        width+"px";
+
+    win.style.height=
+        height+"px";
+
+    win.style.left=
+        Math.min(
+            left,
+            window.innerWidth-width-10
+        )+"px";
+
+    win.style.top=
+        Math.min(
+            top,
+            window.innerHeight-height-60
+        )+"px";
+
+    win.style.zIndex=
+        ++highestZ;
+
+    win.innerHTML=`
+
+        <div class="titlebar">
+
+            <img
+                class="titlebarIcon"
+                src="${icon}"
+                alt=""
+            >
+
+            <div class="titleText">
+                ${escapeHTML(title)}
+            </div>
+
+            <div class="windowControls">
+
+                <button
+                    class="windowControl minimize"
+                >
+                    −
+                </button>
+
+                <button
+                    class="windowControl maximize"
+                >
+                    □
+                </button>
+
+                <button
+                    class="windowControl close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="windowBody">
+            ${bodyHTML}
+        </div>
+
+    `;
+
+    desktop.appendChild(win);
+
+    windows[type]=win;
+
+    requestAnimationFrame(()=>{
+
+        win.classList.add(
+            "visible"
+        );
+
+    });
+
+    playSound(
+        "Windows Navigation",
+        .35
+    );
+
+    setupWindowControls(
+        win,
+        type
+    );
+
+    setupWindowDrag(
+        win
+    );
+
+    addTaskButton(
+        type,
+        title,
+        icon
+    );
+
+    return win;
+}
+
+/* =========================================================
+   WINDOW CONTROLS
+========================================================= */
+
+function setupWindowControls(
+    win,
+    type
+){
+
+    const close=
+        win.querySelector(".close");
+
+    const minimize=
+        win.querySelector(".minimize");
+
+    const maximize=
+        win.querySelector(".maximize");
+
+    close.addEventListener(
+        "click",
+        e=>{
+
+            e.stopPropagation();
+
+            win.classList.remove(
+                "visible"
+            );
+
+            setTimeout(()=>{
+
+                win.remove();
+
+                delete windows[type];
+
+                removeTaskButton(type);
+
+            },180);
+
+            playSound(
+                "Windows Navigation",
+                .4
+            );
+        }
+    );
+
+    minimize.addEventListener(
+        "click",
+        e=>{
+
+            e.stopPropagation();
+
+            win.classList.add(
+                "minimized"
+            );
+
+            playSound(
+                "Windows Minimize",
+                .45
+            );
+        }
+    );
+
+    maximize.addEventListener(
+        "click",
+        e=>{
+
+            e.stopPropagation();
+
+            win.classList.toggle(
+                "maximized"
+            );
+
+            playSound(
+                "Windows Navigation",
+                .4
+            );
+        }
+    );
+
+    win.addEventListener(
+        "mousedown",
+        ()=>{
+            win.style.zIndex=
+                ++highestZ;
+        }
+    );
+}
+
+/* =========================================================
+   WINDOW DRAGGING
+========================================================= */
+
+function setupWindowDrag(win){
+
+    const titlebar=
+        win.querySelector(
+            ".titlebar"
+        );
+
+    let dragging=false;
+
+    let offsetX=0;
+    let offsetY=0;
+
+    titlebar.addEventListener(
+        "mousedown",
+        e=>{
+
+            if(
+                e.target.closest(
+                    ".windowControls"
+                )
+            )
+                return;
+
+            if(
+                win.classList.contains(
+                    "maximized"
+                )
+            )
+                return;
+
+            dragging=true;
+
+            const rect=
+                win.getBoundingClientRect();
+
+            offsetX=
+                e.clientX-rect.left;
+
+            offsetY=
+                e.clientY-rect.top;
+
+            win.style.zIndex=
+                ++highestZ;
+
+            e.preventDefault();
+        }
+    );
+
+    document.addEventListener(
+        "mousemove",
+        e=>{
+
+            if(!dragging)
+                return;
+
+            let x=
+                e.clientX-offsetX;
+
+            let y=
+                e.clientY-offsetY;
+
+            const maxX=
+                window.innerWidth-
+                win.offsetWidth;
+
+            const maxY=
+                window.innerHeight-
+                48-
+                win.offsetHeight;
+
+            x=Math.max(
+                0,
+                Math.min(x,maxX)
+            );
+
+            y=Math.max(
+                0,
+                Math.min(y,maxY)
+            );
+
+            win.style.left=
+                x+"px";
+
+            win.style.top=
+                y+"px";
+        }
+    );
+
+    document.addEventListener(
+        "mouseup",
+        ()=>{
+            dragging=false;
+        }
+    );
+}
+
+/* =========================================================
+   TASK BUTTONS
+========================================================= */
+
+function addTaskButton(
+    type,
+    title,
+    icon
+){
+
+    const taskButtons=
+        document.getElementById(
+            "taskButtons"
+        );
+
+    const button=
+        document.createElement(
+            "button"
+        );
+
+    button.className=
+        "taskButton";
+
+    button.dataset.type=
+        type;
+
+    button.title=title;
+
+    button.innerHTML=`
+
+        <img
+            src="${icon}"
+            alt=""
+        >
+
+    `;
+
+    button.addEventListener(
+        "click",
+        ()=>{
+
+            const win=
+                windows[type];
+
+            if(!win)
+                return;
+
+            if(
+                win.classList.contains(
+                    "minimized"
+                )
+            ){
+
+                win.classList.remove(
+                    "minimized"
+                );
+
+                win.style.zIndex=
+                    ++highestZ;
+
+                playSound(
+                    "Windows Restore",
+                    .45
+                );
+
+            }else{
+
+                win.classList.add(
+                    "minimized"
+                );
+
+                playSound(
+                    "Windows Minimize",
+                    .45
+                );
+            }
+        }
+    );
+
+    taskButtons.appendChild(
+        button
+    );
+}
+
+function removeTaskButton(type){
+
+    const button=
+        document.querySelector(
+            `.taskButton[data-type="${type}"]`
+        );
+
+    if(button)
+        button.remove();
+}
+
+/* =========================================================
+   OPEN WINDOW ROUTER
+========================================================= */
+
+function openWindow(type){
+
+    if(diskDeleted){
+
+        diskError();
+
+        return;
+    }
+
+    switch(type){
+
+        case "computer":
+            openComputer();
+            break;
+
+        case "explorer":
+            openExplorer();
+            break;
+
+        case "notepad":
+            openNotepad();
+            break;
+
+        case "paint":
+            openPaint();
+            break;
+
+        case "calculator":
+            openCalculator();
+            break;
+
+        case "music":
+            openMusic();
+            break;
+
+        case "browser":
+            openBrowser();
+            break;
+
+        case "recycle":
+            openRecycle();
+            break;
+
+        case "hefetus":
+            showPopup();
+            break;
+
+        case "cmd":
+            openCommandPrompt();
+            break;
+
+        case "dvdmaker":
+            openDVDMaker();
+            break;
+
+        case "mediacenter":
+            openMediaCenter();
+            break;
+
+        case "wordpad":
+            openWordPad();
+            break;
+
+        case "sticky":
+            openStickyNotes();
+            break;
+
+        case "hefpyke":
+            openHefpyke();
+            break;
+
+        case "system":
+            openSystemProperties();
+            break;
+
+        case "games":
+            openGames();
+            break;
+
+        case "folder":
+            openExplorer();
+            setTimeout(()=>renderExplorer("newfolder"),30);
+            break;
+    }
+}
+
+/* =========================================================
+   HEFPYKE MESSAGING
+========================================================= */
+
+function openHefpyke(){
+
+    createWindow(
+        "hefpyke",
+        "Hefpyke",
+        "./assets/images/hefetus.png",
+        850,
+        570,
+        `
+        <div class="hefpykeApp">
+
+            <div class="hefpykeSidebar">
+                <div class="hefpykeBrand">Hefpyke</div>
+
+                <div
+                    class="hefpykeNav active"
+                    id="hefpykeMessagesNav"
+                    onclick="showHefpykeMessages()"
+                >
+                    Messages
+                </div>
+
+                <div
+                    class="hefpykeNav"
+                    id="hefpykeContactsNav"
+                    onclick="showHefpykeContacts()"
+                >
+                    Contacts
+                </div>
+            </div>
+
+            <div class="hefpykeMain" style="position:relative">
+                <div class="hefpykeHeader">
+                    <span class="hefpykeHeaderTitle" id="hefpykeHeader">Messages</span>
+                    <button
+                        class="hefpykeMore"
+                        title="More"
+                        onclick="toggleHefpykeMenu(event)"
+                    >
+                        ⋯
+                    </button>
+                    <div class="hefpykeMenu" id="hefpykeMenu">
+                        <div
+                            class="hefpykeMenuItem"
+                            onclick="showHefpykeArchived(); closeHefpykeMenu()"
+                        >
+                            Archived messages
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="hefpykeMessages"
+                    id="hefpykeMessages"
+                ></div>
+
+                <div id="hefpykeCallNotice" class="hefpykeCallNotice">
+                    <strong>Call declined</strong>
+                    <br><br>
+                    Fergus declined the call.
+                </div>
+            </div>
+
+        </div>
+        `
+    );
+
+    setTimeout(showHefpykeMessages,30);
+}
+
+function getHefpykeWindow(){
+    return document.querySelector('.window[data-type="hefpyke"]');
+}
+
+function toggleHefpykeMenu(e){
+    if(e) e.stopPropagation();
+    const win=getHefpykeWindow();
+    if(!win) return;
+    const menu=win.querySelector("#hefpykeMenu");
+    if(!menu) return;
+    menu.style.display=menu.style.display==="block" ? "none" : "block";
+}
+
+function closeHefpykeMenu(){
+    const win=getHefpykeWindow();
+    if(!win) return;
+    const menu=win.querySelector("#hefpykeMenu");
+    if(menu) menu.style.display="none";
+}
+
+function setHefpykeActive(id){
+    const win=getHefpykeWindow();
+    if(!win) return;
+    win.querySelectorAll(".hefpykeNav").forEach(n=>n.classList.remove("active"));
+    const item=win.querySelector("#"+id);
+    if(item) item.classList.add("active");
+}
+
+function showHefpykeMessages(){
+    const win=getHefpykeWindow();
+    if(!win) return;
+    const header=win.querySelector("#hefpykeHeader");
+    const area=win.querySelector("#hefpykeMessages");
+    if(!header || !area) return;
+
+    closeHefpykeMenu();
+    setHefpykeActive("hefpykeMessagesNav");
+    header.textContent="Messages";
+
+    area.innerHTML=`
+        <div class="hefpykeEmpty">
+            No messages yet.
+        </div>
+    `;
+}
+
+function showHefpykeContacts(){
+    const win=getHefpykeWindow();
+    if(!win) return;
+    const header=win.querySelector("#hefpykeHeader");
+    const area=win.querySelector("#hefpykeMessages");
+    if(!header || !area) return;
+
+    closeHefpykeMenu();
+    setHefpykeActive("hefpykeContactsNav");
+    header.textContent="Contacts";
+
+    area.innerHTML=`
+        <div class="hefpykeContact">
+            <img
+                class="hefpykeContactAvatar"
+                src="./assets/images/hefetus.png"
+                alt=""
+            >
+            <div class="hefpykeContactInfo">
+                <div class="hefpykeContactName">Fergus</div>
+                <div class="hefpykeContactNumber">889-0122-6102</div>
+            </div>
+            <button
+                class="hefpykeCallButton"
+                onclick="callHefpykeFergus()"
+            >
+                ☎ Call
+            </button>
+        </div>
+    `;
+}
+
+function showHefpykeArchived(){
+    const win=getHefpykeWindow();
+    if(!win) return;
+
+    const header=win.querySelector("#hefpykeHeader");
+    const area=win.querySelector("#hefpykeMessages");
+    if(!header || !area) return;
+
+    closeHefpykeMenu();
+    win.querySelectorAll(".hefpykeNav").forEach(n=>n.classList.remove("active"));
+    header.textContent="Archived messages";
+
+    area.innerHTML=`
+        <div class="hefpykeArchiveList">
+            <div
+                class="hefpykeArchiveItem"
+                onclick="openHefpykeArchive('user9292393')"
+            >
+                <strong>user9292393</strong>
+                <br>
+                <small>Archived conversation</small>
+            </div>
+        </div>
+    `;
+}
+
+function openHefpykeArchive(user){
+    if(user!=="user9292393") return;
+
+    const win=getHefpykeWindow();
+    if(!win) return;
+
+    const header=win.querySelector("#hefpykeHeader");
+    const area=win.querySelector("#hefpykeMessages");
+    if(!header || !area) return;
+
+    closeHefpykeMenu();
+    header.textContent="user9292393";
+
+    area.innerHTML=`
+        <div class="hefpykeConversation">
+            <div class="hefpykeConversationTitle">user9292393</div>
+
+            <div class="hefpykeMessage theirs blank"></div>
+
+            <div class="hefpykeMessage ours">
+                Check out this cool game I found, it is on Internet Explorer.
+            </div>
+
+            <div class="hefpykeMessage theirs blank"></div>
+
+            <div class="hefpykeMessage ours">
+                You want the domain? Alright, it is: clicker.hef.hu.
+            </div>
+
+            <div class="hefpykeMessage theirs blank"></div>
+
+            <div class="hefpykeMessage ours">
+                What?
+            </div>
+        </div>
+
+        <div class="hefpykeNoMore">
+            No more content could be loaded.
+        </div>
+    `;
+}
+
+function callHefpykeFergus(){
+    const win=getHefpykeWindow();
+    if(!win) return;
+
+    const notice=win.querySelector("#hefpykeCallNotice");
+    if(!notice) return;
+
+    notice.classList.add("show");
+
+    setTimeout(()=>{
+        notice.classList.remove("show");
+    },2200);
+
+    playSound("error",.55);
+}
+
+function showHefpykeUnavailable(){
+    showHefpykeMessages();
+}
+
+/* =========================================================
+   COMPUTER
+========================================================= */
+
+function openComputer(){
+
+    createWindow(
+        "computer",
+        "Computer",
+        "./assets/images/computer.ico",
+        650,
+        440,
+        `
+
+        <div class="explorerToolbar">
+
+            <button
+                class="winButton"
+                onclick="openExplorer()"
+            >
+                Open
+            </button>
+
+            <input
+                class="explorerAddress"
+                value="Computer"
+                readonly
+            >
+
+        </div>
+
+        <div
+            class="explorerFiles"
+            style="height:calc(100% - 42px)"
+        >
+
+            <div class="fileItem">
+                <img src="./assets/images/disk storage.ico">
+                <div>Local Disk (C:)</div>
+            </div>
+
+            <div class="fileItem">
+                <img src="./assets/images/floppy drive.ico">
+                <div>Floppy Drive</div>
+            </div>
+
+            <div class="fileItem">
+                <img src="./assets/images/optical drive.ico">
+                <div>DVD Drive</div>
+            </div>
+
+            <div
+                class="fileItem"
+                onclick="openMusic()"
+            >
+                <img src="./assets/images/music disk.ico">
+                <div>Music</div>
+            </div>
+
+            <div
+                class="fileItem"
+                onclick="openSystemProperties()"
+            >
+                <img src="./assets/images/computer.ico">
+                <div>System Properties</div>
+            </div>
+
+        </div>
+
+        `
+    );
+}
+
+/* =========================================================
+   FILE EXPLORER
+========================================================= */
+
+function openExplorer(){
+
+    createWindow(
+        "explorer",
+        "File Explorer",
+        "./assets/images/file explorer.png",
+        780,
+        520,
+        `
+        <div class="explorerToolbar">
+
+            <button
+                class="winButton"
+                id="explorerBackButton"
+                onclick="explorerBack()"
+            >
+                ←
+            </button>
+
+            <button
+                class="winButton"
+                id="explorerForwardButton"
+                onclick="showNotification('Forward')"
+            >
+                →
+            </button>
+
+            <input
+                class="explorerAddress"
+                id="explorerAddress"
+                value="Computer"
+                readonly
+            >
+
+        </div>
+
+        <div class="explorerMain">
+
+            <div class="explorerSide">
+
+                <div
+                    class="explorerSideItem"
+                    onclick="renderExplorer('computer')"
+                >
+                    Computer
+                </div>
+
+                <div
+                    class="explorerSideItem"
+                    onclick="renderExplorer('localdisk')"
+                >
+                    Local Disk (C:)
+                </div>
+
+                <div
+                    class="explorerSideItem"
+                    onclick="renderExplorer('desktop')"
+                >
+                    Desktop
+                </div>
+
+                <div
+                    class="explorerSideItem"
+                    onclick="renderExplorer('documents')"
+                >
+                    Documents
+                </div>
+
+                <div
+                    class="explorerSideItem"
+                    onclick="renderExplorer('pictures')"
+                >
+                    Pictures
+                </div>
+
+                <div
+                    class="explorerSideItem"
+                    onclick="renderExplorer('music')"
+                >
+                    Music
+                </div>
+
+            </div>
+
+            <div
+                class="explorerFiles"
+                id="explorerView"
+            ></div>
+
+        </div>
+        `
+    );
+
+    setTimeout(
+        ()=>{
+            renderExplorer("computer");
+        },
+        30
+    );
+}
+
+/* =========================================================
+   EXPLORER NAVIGATION
+========================================================= */
+
+let explorerCurrentPath="computer";
+
+function getExplorerWindow(){
+    return document.querySelector(
+        '.window[data-type="explorer"]'
+    );
+}
+
+function renderExplorer(path){
+
+    const win=getExplorerWindow();
+
+    if(!win)
+        return;
+
+    const view=
+        win.querySelector(
+            "#explorerView"
+        );
+
+    const address=
+        win.querySelector(
+            "#explorerAddress"
+        );
+
+    if(!view || !address)
+        return;
+
+    explorerCurrentPath=path;
+
+    if(path==="computer"){
+
+        address.value="Computer";
+
+        view.innerHTML=`
+
+            <div
+                class="fileItem"
+                ondblclick="renderExplorer('localdisk')"
+            >
+                <img src="./assets/images/disk storage.ico">
+                <div>
+                    <strong>Local Disk (C:)</strong>
+                    <br>
+                    <small>Local Disk</small>
+                </div>
+            </div>
+
+            <div class="fileItem">
+                <img src="./assets/images/floppy drive.ico">
+                <div>
+                    <strong>Floppy Disk Drive</strong>
+                    <br>
+                    <small>Removable storage</small>
+                </div>
+            </div>
+
+            <div class="fileItem" ondblclick="renderExplorer('dvd')">
+                <img src="./assets/images/optical drive.ico">
+                <div>
+                    <strong>DVD Drive</strong>
+                    <br>
+                    <small>Optical drive</small>
+                </div>
+            </div>
+
+        `;
+
+        return;
+    }
+
+    if(path==="dvd"){
+
+        address.value="DVD Drive";
+
+        const discs=[];
+        if(window.disc01Unlocked) discs.push(`<div class="fileItem" ondblclick="openDisc01()"><img src="./assets/images/optical drive.ico"><div><strong>DISC_01</strong><br><small>Video disc</small></div></div>`);
+        if(window.disc02Unlocked) discs.push(`<div class="fileItem" ondblclick="openDisc02()"><img src="./assets/images/optical drive.ico"><div><strong>DISC_02</strong><br><small>Video disc</small></div></div>`);
+
+        view.innerHTML=discs.length ? discs.join("") : `<div style="padding:28px;color:#555;font-size:13px">There is no disc in the drive.</div>`;
+        return;
+    }
+
+    if(path==="localdisk"){
+
+        address.value="C:\\";
+
+        view.innerHTML=`
+
+            <div
+                class="fileItem"
+                ondblclick="renderExplorer('desktop')"
+            >
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Desktop</strong>
+                    <br>
+                    <small>Desktop files and shortcuts</small>
+                </div>
+            </div>
+
+            <div
+                class="fileItem"
+                ondblclick="renderExplorer('documents')"
+            >
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Documents</strong>
+                    <br>
+                    <small>User documents</small>
+                </div>
+            </div>
+
+            <div
+                class="fileItem"
+                ondblclick="renderExplorer('music')"
+            >
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Music</strong>
+                    <br>
+                    <small>Music files</small>
+                </div>
+            </div>
+
+            <div
+                class="fileItem"
+                ondblclick="renderExplorer('pictures')"
+            >
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Pictures</strong>
+                    <br>
+                    <small>Picture files</small>
+                </div>
+            </div>
+
+            ${window.disc01Unlocked ? `
+            <div class="fileItem" ondblclick="openDisc01()">
+                <img src="./assets/images/optical drive.ico">
+                <div><strong>DISC_01</strong><br><small>Video disc</small></div>
+            </div>` : ""}
+
+            ${window.disc02Unlocked ? `
+            <div class="fileItem" ondblclick="openDisc02()">
+                <img src="./assets/images/optical drive.ico">
+                <div><strong>DISC_02</strong><br><small>Video disc</small></div>
+            </div>` : ""}
+
+            <div
+                class="fileItem"
+                ondblclick="renderExplorer('games')"
+            >
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Games</strong>
+                    <br>
+                    <small>Games and applications</small>
+                </div>
+            </div>
+
+            <div
+                class="fileItem"
+                ondblclick="renderExplorer('newfolder')"
+            >
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>New Folder</strong>
+                    <br>
+                    <small>Folder</small>
+                </div>
+            </div>
+
+            <div
+                class="fileItem"
+                onclick="openLeaksAuthentication()" ondblclick="openLeaksAuthentication()"
+            >
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Leaks</strong>
+                    <br>
+                    <small>Administrator access required</small>
+                </div>
+            </div>
+
+            <div class="fileItem">
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Downloads</strong>
+                    <br>
+                    <small>Downloaded files</small>
+                </div>
+            </div>
+
+            <div class="fileItem">
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Program Files</strong>
+                    <br>
+                    <small>Installed programs</small>
+                </div>
+            </div>
+
+            <div class="fileItem">
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Users</strong>
+                    <br>
+                    <small>User profiles</small>
+                </div>
+            </div>
+
+            <div class="fileItem">
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Windows</strong>
+                    <br>
+                    <small>System files</small>
+                </div>
+            </div>
+
+        `;
+
+        return;
+    }
+
+    if(path==="games"){
+
+        address.value="C:\\Games";
+
+        view.innerHTML=`
+            <div
+                class="fileItem"
+                ondblclick="openTetris()"
+            >
+                <img src="./assets/images/tetris.ico">
+                <div>
+                    <strong>Tetris</strong>
+                    <br>
+                    <small>Game</small>
+                </div>
+            </div>
+        `;
+
+        return;
+    }
+
+    if(path==="newfolder"){
+
+        address.value="C:\\New Folder";
+
+        view.innerHTML=`
+
+            <div
+                class="fileItem"
+                ondblclick="openVirtualTextFile(
+                    'cmd_operations.txt',
+                    'Instructions to unlock a secret in the command bar:\\n\\ncmd alpha_1.2 disc new user hefetus092'
+                )"
+            >
+                <img src="./assets/images/notepad.ico">
+                <div>
+                    <strong>cmd_operations.txt</strong>
+                    <br>
+                    <small>Text Document</small>
+                </div>
+            </div>
+
+            <div
+                class="fileItem"
+                ondblclick="openVirtualTextFile(
+                    'hefetus.txt',
+                    'hefgles.hu is not recommended to search.'
+                )"
+            >
+                <img src="./assets/images/notepad.ico">
+                <div>
+                    <strong>hefetus.txt</strong>
+                    <br>
+                    <small>Text Document</small>
+                </div>
+            </div>
+
+        `;
+
+        return;
+    }
+
+    if(
+        path==="desktop" ||
+        path==="documents" ||
+        path==="pictures"
+    ){
+
+        const names={
+            desktop:"Desktop",
+            documents:"Documents",
+            pictures:"Pictures"
+        };
+
+        address.value=
+            "C:\\"+
+            names[path];
+
+        view.innerHTML=path==="desktop" ? `
+            <div
+                class="fileItem"
+                ondblclick="renderExplorer('games')"
+            >
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>Games</strong>
+                    <br>
+                    <small>Folder</small>
+                </div>
+            </div>
+
+            <div
+                class="fileItem"
+                ondblclick="renderExplorer('newfolder')"
+            >
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>New Folder</strong>
+                    <br>
+                    <small>Folder</small>
+                </div>
+            </div>
+        ` : `
+            <div class="fileItem">
+                <img src="./assets/images/Windows 7 Folder Bronze.ico">
+                <div>
+                    <strong>This folder is empty.</strong>
+                    <br>
+                    <small>No files to display.</small>
+                </div>
+            </div>
+        `;
+
+        return;
+    }
+
+    if(path==="music"){
+
+        address.value="C:\\Music";
+
+        view.innerHTML=`
+
+            <div
+                class="fileItem"
+                ondblclick="openMusic()"
+            >
+                <img src="./assets/images/music disk.ico">
+                <div>
+                    <strong>Music Library</strong>
+                    <br>
+                    <small>Open Windows Media Player</small>
+                </div>
+            </div>
+
+        `;
+
+    }
+}
+
+function explorerBack(){
+
+    if(explorerCurrentPath==="computer")
+        return;
+
+    if(
+        explorerCurrentPath==="localdisk"
+    ){
+        renderExplorer("computer");
+        return;
+    }
+
+    renderExplorer("localdisk");
+}
+
+/* =========================================================
+   VIRTUAL TEXT FILES
+========================================================= */
+
+function openVirtualTextFile(
+    filename,
+    text
+){
+
+    createWindow(
+        "text_"+filename,
+        filename,
+        "./assets/images/notepad.ico",
+        620,
+        450,
+        `
+        <div class="notepadBody">
+            <textarea
+                id="virtualText_${escapeHTML(filename)}"
+                spellcheck="false"
+                readonly
+            >${escapeHTML(text)}</textarea>
+        </div>
+        `
+    );
+}
+
+/* =========================================================
+   LEAKS ADMINISTRATOR ACCESS
+========================================================= */
+
+function openLeaksAuthentication(){
+
+    if(diskDeleted){
+        diskError();
+        return;
+    }
+
+    const existing=
+        document.getElementById(
+            "leaksAuthOverlay"
+        );
+
+    if(existing)
+        existing.remove();
+
+    const overlay=
+        document.createElement("div");
+
+    overlay.id="leaksAuthOverlay";
+
+    overlay.innerHTML=`
+
+        <div class="leaksAuthWindow">
+
+            <div class="leaksAuthTitle">
+                <img
+                    src="./assets/images/Windows 7 Folder Bronze.ico"
+                    alt=""
+                >
+
+                <span>
+                    Windows Security
+                </span>
+
+                <button
+                    class="windowControl close"
+                    onclick="closeLeaksAuthentication()"
+                >
+                    ×
+                </button>
+            </div>
+
+            <div class="leaksAuthBody">
+
+                <div class="leaksShield">
+                    ⚠
+                </div>
+
+                <div class="leaksAuthContent">
+
+                    <h3>
+                        Administrator access required
+                    </h3>
+
+                    <p>
+                        You must have administrator
+                        privileges to access this folder.
+                    </p>
+
+                    <label>
+                        User name:
+                    </label>
+
+                    <input
+                        id="leaksUsername"
+                        value="Administrator"
+                        readonly
+                    >
+
+                    <label>
+                        Password:
+                    </label>
+
+                    <input
+                        id="leaksPassword"
+                        type="password"
+                        autocomplete="off"
+                    >
+
+                    <div
+                        id="leaksAuthError"
+                        class="leaksAuthError"
+                    ></div>
+
+                </div>
+
+            </div>
+
+            <div class="leaksAuthButtons">
+
+                <button
+                    class="winButton"
+                    onclick="authenticateLeaks()"
+                >
+                    OK
+                </button>
+
+                <button
+                    class="winButton"
+                    onclick="closeLeaksAuthentication()"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    requestAnimationFrame(()=>{
+        overlay.classList.add("leaksAuthVisible");
+        const authWindow=overlay.querySelector(".leaksAuthWindow");
+        if(authWindow){
+            authWindow.style.animation="leaksAdminPopIn .32s cubic-bezier(.2,.8,.2,1) both";
+        }
+    });
+
+    // Windows 7-style critical stop sound for the administrator prompt.
+    const adminSound=new Audio("./assets/sounds/Windows Critical Stop.wav");
+    adminSound.volume=.70;
+    adminSound.play().catch(()=>{
+        const resume=()=>{
+            adminSound.play().catch(()=>{});
+            document.removeEventListener("pointerdown",resume);
+            document.removeEventListener("keydown",resume);
+        };
+        document.addEventListener("pointerdown",resume,{once:true});
+        document.addEventListener("keydown",resume,{once:true});
+    });
+
+    const input=
+        document.getElementById(
+            "leaksPassword"
+        );
+
+    if(input){
+
+        input.focus();
+
+        input.addEventListener(
+            "keydown",
+            e=>{
+                if(e.key==="Enter")
+                    authenticateLeaks();
+            }
+        );
+    }
+
+
+}
+
+function closeLeaksAuthentication(){
+
+    const overlay=
+        document.getElementById(
+            "leaksAuthOverlay"
+        );
+
+    if(overlay)
+        overlay.remove();
+}
+
+function authenticateLeaks(){
+
+    const password=
+        document.getElementById(
+            "leaksPassword"
+        );
+
+    const error=
+        document.getElementById(
+            "leaksAuthError"
+        );
+
+    if(
+        password &&
+        password.value==="HeH615Ftuse"
+    ){
+
+        closeLeaksAuthentication();
+
+        renderLeaksFolder();
+
+        playSound(
+            "Windows Navigation",
+            .4
+        );
+
+        return;
+    }
+
+    if(error)
+        error.textContent=
+            "Access denied. Incorrect password.";
+
+    if(password){
+        password.select();
+
+        playSound(
+            "error",
+            .65
+        );
+    }
+}
+
+function renderLeaksFolder(){
+
+    const win=
+        getExplorerWindow();
+
+    if(!win)
+        return;
+
+    const view=
+        win.querySelector(
+            "#explorerView"
+        );
+
+    const address=
+        win.querySelector(
+            "#explorerAddress"
+        );
+
+    if(!view || !address)
+        return;
+
+    explorerCurrentPath="leaks";
+    address.value="C:\\Leaks";
+
+    view.innerHTML=`
+
+        <div class="leaksUnlockedBanner">
+            <strong>Administrator access granted.</strong>
+            <br>
+            You are viewing the protected Leaks folder.
+        </div>
+
+        <div class="fileItem">
+            <img src="./assets/images/notepad.ico">
+            <div>
+                <strong>Restricted files</strong>
+                <br>
+                <small>Administrator-only content</small>
+            </div>
+        </div>
+
+        <div
+            class="fileItem"
+            ondblclick="openLeaksVideo()"
+            onclick="this.classList.add('selected')"
+            style="cursor:pointer"
+        >
+            <img
+                src="./assets/images/media player.png"
+                alt=""
+                style="object-fit:contain"
+            >
+            <div>
+                <strong>steal-a-banus-rot.mp4</strong>
+                <br>
+                <small>MPEG-4 Video</small>
+            </div>
+        </div>
+
+    `;
+}
+
+/* =========================================================
+   LEAKS VIDEO
+========================================================= */
+
+function openLeaksVideo(){
+
+    if(diskDeleted){
+        diskError();
+        return;
+    }
+
+    createWindow(
+        "stealABanusRot",
+        "steal-a-banus-rot.mp4",
+        "./assets/images/media player.png",
+        820,
+        540,
+        `
+
+        <div
+            style="
+                width:100%;
+                height:100%;
+                background:#000;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                overflow:hidden;
+            "
+        >
+
+            <video
+                src="./assets/videos/steal-a-banus-rot.mp4"
+                controls
+                autoplay
+                style="
+                    width:100%;
+                    height:100%;
+                    object-fit:contain;
+                "
+            ></video>
+
+        </div>
+
+        `
+    );
+}
+
+/* =========================================================
+   NOTEPAD
+========================================================= */
+
+function openNotepad(){
+
+    createWindow(
+        "notepad",
+        "Notepad",
+        "./assets/images/notepad.ico",
+        620,
+        450,
+        `
+
+        <div class="notepadBody">
+
+            <textarea
+                id="notepadText"
+                spellcheck="false"
+                placeholder="Type here..."
+            ></textarea>
+
+        </div>
+
+        `
+    );
+}
+
+/* =========================================================
+   WORDPAD
+========================================================= */
+
+function openWordPad(){
+
+    createWindow(
+        "wordpad",
+        "WordPad",
+        "./assets/images/WordPad.png",
+        720,
+        500,
+        `
+
+        <div class="wordpadBody">
+
+            <div class="wordpadToolbar">
+
+                <button class="winButton">
+                    Paste
+                </button>
+
+                <button class="winButton">
+                    Bold
+                </button>
+
+                <button class="winButton">
+                    Italic
+                </button>
+
+                <button class="winButton">
+                    Underline
+                </button>
+
+            </div>
+
+            <textarea
+                id="wordpadText"
+                spellcheck="false"
+                placeholder="Type your document here..."
+            ></textarea>
+
+        </div>
+
+        `
+    );
+}
+
+/* =========================================================
+   STICKY NOTES
+========================================================= */
+
+function openStickyNotes(){
+
+    createWindow(
+        "sticky",
+        "Sticky Notes",
+        "./assets/images/Sticky Notes.png",
+        390,
+        360,
+        `
+
+        <div class="stickyWindow">
+
+            <textarea
+                class="stickyText"
+                placeholder="Type a note..."
+            ></textarea>
+
+        </div>
+
+        `
+    );
+}
+
+/* =========================================================
+   SYSTEM PROPERTIES
+========================================================= */
+
+function openSystemProperties(){
+
+    createWindow(
+        "system",
+        "System Properties",
+        "./assets/images/computer.ico",
+        560,
+        440,
+        `
+
+        <div class="systemProperties">
+
+            <div class="systemLogo">
+
+                <img
+                    src="./assets/images/computer.ico"
+                >
+
+                <div>
+
+                    <h2 style="margin:0">
+                        System
+                    </h2>
+
+                    <div>
+                        hefetus.win7
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="specRow">
+                <strong>Windows edition:</strong>
+                hefetus.win7
+            </div>
+
+            <div class="specRow">
+                <strong>Registered user:</strong>
+                Hefetus092
+            </div>
+
+            <div class="specRow">
+                <strong>Computer name:</strong>
+                HEFETUS-PC
+            </div>
+
+            <div class="specRow">
+                <strong>Processor:</strong>
+                Hefetus Virtual CPU
+            </div>
+
+            <div class="specRow">
+                <strong>Installed memory:</strong>
+                4.00 GB
+            </div>
+
+            <div class="specRow">
+                <strong>System type:</strong>
+                64-bit Operating System
+            </div>
+
+            <div class="specRow">
+                <strong>Windows activation:</strong>
+                Activated
+            </div>
+
+            <br>
+
+            <button
+                class="winButton"
+                onclick="showNotification('System settings opened')"
+            >
+                Change settings
+            </button>
+
+        </div>
+
+        `
+    );
+}
+
+/* =========================================================
+   CALCULATOR
+========================================================= */
+
+function openCalculator(){
+
+    createWindow(
+        "calculator",
+        "Calculator",
+        "./assets/images/calculator.ico",
+        330,
+        440,
+        `
+
+        <div class="calculator">
+
+            <input
+                id="calcDisplay"
+                readonly
+            >
+
+            <div class="calcGrid">
+
+                <button onclick="calcClear()">C</button>
+                <button onclick="calcInput('(')">(</button>
+                <button onclick="calcInput(')')">)</button>
+                <button onclick="calcInput('/')">÷</button>
+
+                <button onclick="calcInput('7')">7</button>
+                <button onclick="calcInput('8')">8</button>
+                <button onclick="calcInput('9')">9</button>
+                <button onclick="calcInput('*')">×</button>
+
+                <button onclick="calcInput('4')">4</button>
+                <button onclick="calcInput('5')">5</button>
+                <button onclick="calcInput('6')">6</button>
+                <button onclick="calcInput('-')">−</button>
+
+                <button onclick="calcInput('1')">1</button>
+                <button onclick="calcInput('2')">2</button>
+                <button onclick="calcInput('3')">3</button>
+                <button onclick="calcInput('+')">+</button>
+
+                <button onclick="calcInput('0')">0</button>
+                <button onclick="calcInput('.')">.</button>
+                <button onclick="calcEquals()">=</button>
+                <button onclick="calcClear()">CE</button>
+
+            </div>
+
+        </div>
+
+        `
+    );
+}
+
+function calcInput(value){
+
+    const display=
+        document.getElementById(
+            "calcDisplay"
+        );
+
+    if(display)
+        display.value+=value;
+}
+
+function calcClear(){
+
+    const display=
+        document.getElementById(
+            "calcDisplay"
+        );
+
+    if(display)
+        display.value="";
+}
+
+function calcEquals(){
+
+    const display=
+        document.getElementById(
+            "calcDisplay"
+        );
+
+    if(!display)
+        return;
+
+    try{
+
+        if(!/^[0-9+\-*/().\s]+$/.test(display.value))
+            throw new Error();
+
+        display.value=
+            Function(
+                '"use strict";return ('+
+                display.value+
+                ')'
+            )();
+
+    }catch{
+
+        display.value="Error";
+
+        playSound(
+            "error",
+            .65
+        );
+    }
+}
+
+/* =========================================================
+   PAINT
+========================================================= */
+
+function openPaint(){
+
+    createWindow(
+        "paint",
+        "Paint",
+        "./assets/images/paint.ico",
+        700,
+        500,
+        `
+
+        <div class="paintTools">
+
+            <button
+                class="winButton"
+                onclick="clearPaint()"
+            >
+                Clear
+            </button>
+
+            <label>
+                Color
+                <input
+                    id="paintColor"
+                    type="color"
+                    value="#000000"
+                >
+            </label>
+
+            <label>
+                Size
+                <input
+                    id="paintSize"
+                    type="range"
+                    min="1"
+                    max="30"
+                    value="5"
+                >
+            </label>
+
+        </div>
+
+        <canvas
+            id="paintCanvas"
+            width="680"
+            height="400"
+        ></canvas>
+
+        `
+    );
+
+    setupPaint();
+}
+
+function setupPaint(){
+
+    const canvas=
+        document.getElementById(
+            "paintCanvas"
+        );
+
+    if(!canvas)
+        return;
+
+    const ctx=
+        canvas.getContext("2d");
+
+    let drawing=false;
+
+    canvas.addEventListener(
+        "mousedown",
+        e=>{
+
+            if(diskDeleted){
+
+                diskError();
+
+                return;
+            }
+
+            drawing=true;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                e.offsetX,
+                e.offsetY
+            );
+        }
+    );
+
+    canvas.addEventListener(
+        "mousemove",
+        e=>{
+
+            if(!drawing)
+                return;
+
+            ctx.strokeStyle=
+                document.getElementById(
+                    "paintColor"
+                ).value;
+
+            ctx.lineWidth=
+                document.getElementById(
+                    "paintSize"
+                ).value;
+
+            ctx.lineCap="round";
+
+            ctx.lineTo(
+                e.offsetX,
+                e.offsetY
+            );
+
+            ctx.stroke();
+        }
+    );
+
+    canvas.addEventListener(
+        "mouseup",
+        ()=>{
+            drawing=false;
+        }
+    );
+
+    canvas.addEventListener(
+        "mouseleave",
+        ()=>{
+            drawing=false;
+        }
+    );
+}
+
+function clearPaint(){
+
+    const canvas=
+        document.getElementById(
+            "paintCanvas"
+        );
+
+    if(!canvas)
+        return;
+
+    canvas
+        .getContext("2d")
+        .clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+}
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+const musicTracks=[
+
+    {
+        name:"song.mp3",
+        title:"Song 1"
+    },
+
+    {
+        name:"song2.mp3",
+        title:"Song 2"
+    },
+
+    {
+        name:"song3.mp3",
+        title:"Song 3"
+    },
+
+    {
+        name:"song4.mp3",
+        title:"Song 4"
+    }
+
+];
+
+function openMusic(){
+
+    createWindow(
+        "music",
+        "Windows Media Player",
+        "./assets/images/music disk.ico",
+        520,
+        440,
+        `
+
+        <div class="musicPlayer">
+
+            <div class="musicDisplay">
+
+                <div
+                    class="musicTitle"
+                    id="musicTitle"
+                >
+                    No song selected
+                </div>
+
+                <div id="musicStatus">
+                    Ready
+                </div>
+
+            </div>
+
+            <div class="musicControls">
+
+                <button
+                    class="winButton"
+                    onclick="previousSong()"
+                >
+                    ◀
+                </button>
+
+                <button
+                    class="winButton"
+                    onclick="toggleMusic()"
+                >
+                    ▶ / ❚❚
+                </button>
+
+                <button
+                    class="winButton"
+                    onclick="nextSong()"
+                >
+                    ▶
+                </button>
+
+                <button
+                    class="winButton"
+                    onclick="stopMusic()"
+                >
+                    ■
+                </button>
+
+            </div>
+
+            <label>
+                Volume
+                <input
+                    id="musicVolume"
+                    class="musicVolume"
+                    type="range"
+                    min="0"
+                    max="1"
+                    step=".01"
+                    value=".7"
+                    oninput="changeMusicVolume()"
+                >
+            </label>
+
+            <br><br>
+
+            <label>
+                Seek
+                <input
+                    id="musicProgress"
+                    class="musicProgress"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                    oninput="seekMusic()"
+                >
+            </label>
+
+            <div class="songList">
+
+                ${musicTracks.map(
+                    (track,index)=>`
+
+                    <div
+                        class="song"
+                        data-song="${index}"
+                        onclick="selectSong(${index})"
+                    >
+                        ${escapeHTML(track.title)}
+                    </div>
+
+                    `
+                ).join("")}
+
+            </div>
+
+        </div>
+
+        `
+    );
+
+    setupMusic();
+}
+
+function setupMusic(){
+
+    if(musicPlayer)
+        return;
+
+    musicPlayer=
+        new Audio();
+
+    musicPlayer.volume=.7;
+
+    musicPlayer.addEventListener(
+        "timeupdate",
+        updateMusicProgress
+    );
+
+    musicPlayer.addEventListener(
+        "ended",
+        nextSong
+    );
+
+    selectSong(0);
+}
+
+function selectSong(index){
+
+    if(!musicPlayer)
+        setupMusic();
+
+    if(!musicTracks[index])
+        return;
+
+    musicIndex=index;
+
+    const track=
+        musicTracks[index];
+
+    musicPlayer.src=
+        "./assets/music/"+
+        track.name;
+
+    const title=
+        document.getElementById(
+            "musicTitle"
+        );
+
+    const status=
+        document.getElementById(
+            "musicStatus"
+        );
+
+    if(title)
+        title.textContent=
+            track.title;
+
+    if(status)
+        status.textContent=
+            "Stopped";
+
+    document
+        .querySelectorAll(".song")
+        .forEach(song=>{
+            song.classList.remove(
+                "active"
+            );
+        });
+
+    const selected=
+        document.querySelector(
+            `.song[data-song="${index}"]`
+        );
+
+    if(selected)
+        selected.classList.add(
+            "active"
+        );
+}
+
+function toggleMusic(){
+
+    if(!musicPlayer)
+        setupMusic();
+
+    if(musicPlayer.paused){
+
+        musicPlayer
+            .play()
+            .then(()=>{
+
+                const status=
+                    document.getElementById(
+                        "musicStatus"
+                    );
+
+                if(status)
+                    status.textContent=
+                        "Playing";
+
+            })
+            .catch(()=>{
+
+                showNotification(
+                    "The selected song could not be loaded."
+                );
+
+            });
+
+    }else{
+
+        musicPlayer.pause();
+
+        const status=
+            document.getElementById(
+                "musicStatus"
+            );
+
+        if(status)
+            status.textContent=
+                "Paused";
+    }
+}
+
+function stopMusic(){
+
+    if(!musicPlayer)
+        return;
+
+    musicPlayer.pause();
+
+    musicPlayer.currentTime=0;
+
+    const status=
+        document.getElementById(
+            "musicStatus"
+        );
+
+    if(status)
+        status.textContent=
+            "Stopped";
+}
+
+function nextSong(){
+
+    if(!musicTracks.length)
+        return;
+
+    musicIndex++;
+
+    if(
+        musicIndex>=
+        musicTracks.length
+    )
+        musicIndex=0;
+
+    selectSong(
+        musicIndex
+    );
+
+    toggleMusic();
+}
+
+function previousSong(){
+
+    if(!musicTracks.length)
+        return;
+
+    musicIndex--;
+
+    if(musicIndex<0)
+        musicIndex=
+            musicTracks.length-1;
+
+    selectSong(
+        musicIndex
+    );
+}
+
+function changeMusicVolume(){
+
+    if(!musicPlayer)
+        return;
+
+    const volume=
+        document.getElementById(
+            "musicVolume"
+        );
+
+    musicPlayer.volume=
+        volume.value;
+}
+
+function updateMusicProgress(){
+
+    if(!musicPlayer)
+        return;
+
+    if(!musicPlayer.duration)
+        return;
+
+    const progress=
+        document.getElementById(
+            "musicProgress"
+        );
+
+    if(progress){
+
+        progress.value=
+            (
+                musicPlayer.currentTime/
+                musicPlayer.duration
+            )*100;
+    }
+}
+
+function seekMusic(){
+
+    if(!musicPlayer)
+        return;
+
+    if(!musicPlayer.duration)
+        return;
+
+    const progress=
+        document.getElementById(
+            "musicProgress"
+        );
+
+    musicPlayer.currentTime=
+        (
+            progress.value/100
+        )*
+        musicPlayer.duration;
+}
+
+/* =========================================================
+   WINDOWS DVD MAKER
+========================================================= */
+
+function openDVDMaker(){
+
+    createWindow(
+        "dvdmaker",
+        "Windows DVD Maker",
+        "./assets/images/optical drive.ico",
+        620,
+        440,
+        `
+
+        <div class="dvdMaker">
+
+            <h2>
+                Windows DVD Maker
+            </h2>
+
+            <p>
+                Create a DVD using your photos and videos.
+            </p>
+
+            <div class="dvdProject">
+
+                <h3>
+                    DVD Project
+                </h3>
+
+                <p>
+                    No media has been added.
+                </p>
+
+                <button
+                    class="winButton"
+                    onclick="showNotification('Add photos and videos')"
+                >
+                    Add items
+                </button>
+
+                <button
+                    class="winButton"
+                    onclick="showNotification('DVD project ready')"
+                >
+                    Burn
+                </button>
+
+                <br><br>
+
+                <progress
+                    class="dvdProgress"
+                    value="0"
+                    max="100"
+                ></progress>
+
+            </div>
+
+        </div>
+
+        `
+    );
+}
+
+/* =========================================================
+   WINDOWS MEDIA CENTER
+========================================================= */
+
+function openMediaCenter(){
+
+    createWindow(
+        "mediacenter",
+        "Windows Media Center",
+        "./assets/images/media center.png",
+        720,
+        500,
+        `
+
+        <div class="mediaCenter">
+
+            <h1>
+                Windows Media Center
+            </h1>
+
+            <div class="mediaTileGrid">
+
+                <div
+                    class="mediaTile"
+                    onclick="openMusic()"
+                >
+                    Music
+                </div>
+
+                <div
+                    class="mediaTile"
+                    onclick="showNotification('Pictures opened')"
+                >
+                    Pictures
+                </div>
+
+                <div
+                    class="mediaTile"
+                    onclick="showNotification('Videos opened')"
+                >
+                    Videos
+                </div>
+
+                <div
+                    class="mediaTile"
+                    onclick="openDVDMaker()"
+                >
+                    DVD
+                </div>
+
+            </div>
+
+        </div>
+
+        `
+    );
+}
+
+/* =========================================================
+   INTERNET EXPLORER
+========================================================= */
+
+function openBrowser(){
+
+    createWindow(
+        "browser",
+        "Internet Explorer",
+        "./assets/images/Internet Explorer.ico",
+        760,
+        500,
+        `
+
+        <div class="browserToolbar">
+
+            <button
+                class="winButton"
+                onclick="browserBack()"
+            >
+                ←
+            </button>
+
+            <button
+                class="winButton"
+                onclick="browserForward()"
+            >
+                →
+            </button>
+
+            <input
+                id="browserAddress"
+                value="http://"
+                spellcheck="false"
+            >
+
+            <button
+                class="winButton"
+                onclick="fakeBrowse()"
+            >
+                Go
+            </button>
+
+        </div>
+
+        <div id="browserPage">
+
+            <h2>
+                Internet Explorer
+            </h2>
+
+            <p>
+                Welcome to Internet Explorer.
+            </p>
+
+            <p>
+                Enter a website address above.
+            </p>
+
+        </div>
+
+        `
+    );
+}
+
+function browserBack(){
+    showNotification("Back");
+}
+
+function browserForward(){
+    showNotification("Forward");
+}
+
+function fakeBrowse(){
+
+    const address=document.getElementById("browserAddress");
+    const page=document.getElementById("browserPage");
+    if(!address||!page) return;
+
+    const entered=address.value.trim().toLowerCase()
+        .replace(/^https?:\/\//,"").replace(/\/.*$/,"");
+
+    if(entered==="hefgles.hu"){
+        startHefglesVirus(page);
+        return;
+    }
+
+    if(entered==="clicker.hef.hu"){
+        startClickerHefGame(page);
+        return;
+    }
+
+    page.innerHTML=`
+        <h2>Internet Explorer</h2>
+        <p>Address: ${escapeHTML(address.value)}</p>
+        <hr>
+        <p>This page could not be displayed.</p>
+    `;
+}
+
+/* =========================================================
+   CLICKER.HEF.HU — HEFETUS CLICKER GAME
+   ========================================================= */
+function startClickerHefGame(page){
+    if(!page) return;
+
+    page.style.padding="0";
+    page.style.background="#10131a";
+    page.style.overflow="auto";
+    page.innerHTML=`
+        <div id="hefClickerGame">
+            <div class="hcTop">
+                <div class="hcLogo"><span>HEF</span> CLICKER</div>
+                <div class="hcVersion">clicker.hef.hu // v2.4</div>
+            </div>
+            <div class="hcStats">
+                <div><small>HEF POINTS</small><strong id="hcPoints">0</strong></div>
+                <div><small>PER CLICK</small><strong id="hcPower">1</strong></div>
+                <div><small>PER SECOND</small><strong id="hcAuto">0</strong></div>
+                <div><small>BEST</small><strong id="hcBest">0</strong></div>
+            </div>
+            <div class="hcMain">
+                <section class="hcClickZone">
+                    <div class="hcTitle">CLICK THE HEFETUS</div>
+                    <button id="hcHefetus" class="hcHefetusBtn" aria-label="Click Hefetus">
+                        <img src="./assets/images/hefetus.png" alt="Hefetus">
+                    </button>
+                    <div id="hcFloaters"></div>
+                    <div class="hcCombo" id="hcCombo">COMBO x1</div>
+                    <div class="hcHint">CLICK • CLICK • CLICK</div>
+                </section>
+                <aside class="hcShop">
+                    <div class="hcShopHeader"><span>SHOP</span><span id="hcShopStatus">READY</span></div>
+                    <div id="hcShopItems"></div>
+                    <div class="hcShopFooter">
+                        <button class="hcSmallBtn" id="hcReset">Reset session</button>
+                        <button class="hcSmallBtn" id="hcSound">🔊 Sound</button>
+                    </div>
+                </aside>
+            </div>
+            <div class="hcBottom">
+                <div><b>ACHIEVEMENTS</b><span id="hcAchievements">0 / 6</span></div>
+                <div id="hcAchievementText">Start clicking...</div>
+            </div>
+        </div>
+    `;
+
+    if(!document.getElementById("hcStyles")){
+        const style=document.createElement("style");
+        style.id="hcStyles";
+        style.textContent=`
+            #hefClickerGame{min-height:100%;box-sizing:border-box;background:linear-gradient(#eef5fc 0,#d9e8f7 46%,#c5d9ec 100%);color:#18324b;font-family:"Segoe UI",Tahoma,Arial,sans-serif;padding:10px;user-select:none}
+            #hefClickerGame *{box-sizing:border-box}
+            .hcTop{height:46px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 10px;background:linear-gradient(#f8fbff,#d8e8f7);border:1px solid #8daac5;border-radius:3px;box-shadow:inset 0 1px #fff,0 1px 3px #8ca2b5}
+            .hcLogo{font-size:20px;font-weight:600;letter-spacing:.5px;color:#173b5b}.hcLogo span{color:#1d69a8}.hcVersion{font-size:11px;color:#55728c}
+            .hcStats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}.hcStats>div{background:linear-gradient(#fff,#e5f0fa);border:1px solid #9ab3c9;border-radius:3px;padding:7px 9px;box-shadow:inset 0 1px #fff}.hcStats small{display:block;color:#54718a;font-size:9px}.hcStats strong{display:block;font-size:19px;margin-top:2px;color:#163b59}
+            .hcMain{display:grid;grid-template-columns:minmax(280px,1fr) 290px;gap:8px;min-height:410px}.hcClickZone{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#fafdff,#dcecf9);border:1px solid #8faac0;border-radius:4px;overflow:hidden;box-shadow:inset 0 1px #fff,0 1px 3px #9cafc0}.hcTitle{font-size:15px;letter-spacing:2px;color:#315b7e;margin-bottom:12px;font-weight:600}.hcHefetusBtn{width:230px;height:230px;border:1px solid #789bb6;background:radial-gradient(circle,#ffffff 0,#e6f2fc 62%,#c4dcec 100%);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px #8ca7ba,inset 0 2px 4px #fff;transition:transform .08s,filter .15s}.hcHefetusBtn:hover{filter:brightness(1.12)}.hcHefetusBtn:active{transform:scale(.92)}.hcHefetusBtn img{width:175px;height:175px;object-fit:contain;image-rendering:auto}.hcCombo{margin-top:10px;color:#246da5;font-weight:700}.hcHint{font-size:10px;color:#6a849a;margin-top:5px;letter-spacing:2px}.hcShop{background:linear-gradient(#f8fbfe,#dceaf5);border:1px solid #8da9bf;border-radius:4px;padding:9px;overflow:auto;box-shadow:inset 0 1px #fff}.hcShopHeader{display:flex;justify-content:space-between;font-weight:600;color:#244b6b;border-bottom:1px solid #a2b9ca;padding-bottom:8px;margin-bottom:8px}.hcShopHeader span:last-child{font-size:10px;color:#76d39a}.hcItem{border:1px solid #9eb5c8;background:linear-gradient(#fff,#e7f1f8);border-radius:3px;padding:8px;margin-bottom:7px;box-shadow:inset 0 1px #fff}.hcItemTop{display:flex;justify-content:space-between;gap:8px}.hcItemName{font-weight:700}.hcItemDesc{font-size:10px;color:#58748a;margin:3px 0 7px}.hcBuy{width:100%;border:1px solid #6f91aa;background:linear-gradient(#fdfefe,#d4e5f2);color:#173e5b;border-radius:3px;padding:6px;cursor:pointer;font-weight:600;box-shadow:inset 0 1px #fff}.hcBuy:not(:disabled):hover{background:linear-gradient(#fff,#c5dcef)}.hcBuy:disabled{opacity:.4;cursor:not-allowed}.hcBuy:not(:disabled):hover{filter:brightness(1.15)}.hcShopFooter{display:flex;gap:7px;margin-top:10px}.hcSmallBtn{flex:1;background:linear-gradient(#fff,#dbe9f4);color:#244862;border:1px solid #91aabe;border-radius:3px;padding:6px;font-size:10px;cursor:pointer}.hcBottom{margin-top:8px;border:1px solid #8da9bf;background:linear-gradient(#f8fbfe,#dceaf5);border-radius:3px;padding:8px;font-size:11px;display:flex;justify-content:space-between;gap:12px;color:#31536c}.hcBottom b{color:#315f80;margin-right:10px}.hcBottom span{color:#31536c}.hcBottom #hcAchievementText{color:#58758c;text-align:right}.hcFloat{position:absolute;color:#79c9ff;font-weight:800;font-size:18px;pointer-events:none;animation:hcFloat 800ms ease-out forwards;text-shadow:0 1px 4px #000}@keyframes hcFloat{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(1.25)}}
+            .win7DiscUnlock{position:fixed;z-index:100000;left:50%;top:50%;transform:translate(-50%,-50%) scale(.94);width:390px;background:linear-gradient(#f7fbff,#dbeaf7);border:1px solid #6f8fa9;border-radius:5px;box-shadow:0 12px 35px rgba(0,0,0,.4),inset 0 1px #fff;font-family:"Segoe UI",Tahoma,Arial,sans-serif;color:#1c3950;animation:win7DiscPop .22s ease-out forwards}.win7DiscUnlockTitle{height:34px;display:flex;align-items:center;padding:0 8px;gap:7px;background:linear-gradient(#edf7ff,#c9def0);border-bottom:1px solid #9bb5ca;border-radius:5px 5px 0 0}.win7DiscUnlockTitle img{width:22px;height:22px}.win7DiscUnlockTitle span{font-size:12px;font-weight:600;flex:1}.win7DiscUnlockTitle button{width:25px;height:21px;border:1px solid #8ca4b8;border-radius:2px;background:linear-gradient(#fff,#d8e6f0);font-size:17px;line-height:16px;color:#23435b}.win7DiscUnlockBody{display:flex;gap:16px;padding:25px 24px 18px;align-items:center;background:rgba(255,255,255,.42)}.win7DiscUnlockIcon{width:52px;height:52px;object-fit:contain}.win7DiscUnlockBody strong{font-size:16px}.win7DiscUnlockBody p{margin:7px 0 0;font-size:12px;color:#49667b}.win7DiscUnlockButtons{padding:10px 14px;text-align:right;border-top:1px solid #b2c5d4;background:linear-gradient(#edf4f9,#d6e4ee)}.win7DiscUnlockButtons .winButton{min-width:72px}@keyframes win7DiscPop{to{transform:translate(-50%,-50%) scale(1)}}
+            @media(max-width:700px){.hcMain{grid-template-columns:1fr}.hcShop{max-height:310px}.hcStats{grid-template-columns:repeat(2,1fr)}}
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Hef Clicker intentionally does NOT save progress.
+    // Closing/reloading the game starts a fresh session.
+    let save={points:0,best:0,power:1,auto:0,clicks:0,combo:1,last:0,sound:true,owned:{power:0,auto:0,mega:0}};
+
+    const items=[
+        {id:"power",name:"Hefetus Finger",desc:"+1 point per click",base:25,type:"power"},
+        {id:"auto",name:"Tiny Hefetus",desc:"+1 point every second",base:100,type:"auto"},
+        {id:"mega",name:"HEF MACHINE",desc:"+10 points per second",base:750,type:"mega"}
+    ];
+    let comboTimer=null;
+    const $=id=>document.getElementById(id);
+    function cost(item){return Math.floor(item.base*Math.pow(1.65,save.owned[item.id]||0));}
+    function persist(){}
+    function update(){
+        $("hcPoints").textContent=Math.floor(save.points).toLocaleString();
+        $("hcPower").textContent=save.power.toLocaleString();
+        $("hcAuto").textContent=save.auto.toLocaleString();
+        $("hcBest").textContent=Math.floor(save.best).toLocaleString();
+        $("hcCombo").textContent="COMBO x"+save.combo;
+        renderShop();renderAchievements();
+    }
+    function renderShop(){
+        const box=$("hcShopItems"); if(!box)return; box.innerHTML="";
+        items.forEach(item=>{
+            const c=cost(item), owned=save.owned[item.id]||0;
+            const div=document.createElement("div");div.className="hcItem";
+            div.innerHTML=`<div class="hcItemTop"><span class="hcItemName">${item.name}</span><span>Lv.${owned}</span></div><div class="hcItemDesc">${item.desc}</div><button class="hcBuy" ${save.points<c?"disabled":""}>${c.toLocaleString()} HEF</button>`;
+            div.querySelector("button").onclick=()=>buy(item);
+            box.appendChild(div);
+        });
+    }
+    function buy(item){
+        const c=cost(item);if(save.points<c)return;
+        save.points-=c;save.owned[item.id]=(save.owned[item.id]||0)+1;
+        if(item.id==="power")save.power++;
+        if(item.id==="auto")save.auto++;
+        if(item.id==="mega")save.auto+=10;
+        $("hcShopStatus").textContent="PURCHASED";setTimeout(()=>$("hcShopStatus").textContent="READY",700);
+        update();
+    }
+    function clickHefetus(){
+        const now=Date.now();
+        if(now-save.last<900)save.combo=Math.min(25,save.combo+1);else save.combo=1;
+        save.last=now;
+        const gain=save.power*save.combo;save.points+=gain;save.best=Math.max(save.best,save.points);save.clicks++;
+        if(save.points>=100000){ unlockDisc02(); }
+        const f=document.createElement("div");f.className="hcFloat";f.textContent="+"+gain;f.style.left=(45+Math.random()*15)+"%";f.style.top=(42+Math.random()*10)+"%";$("hcFloaters").appendChild(f);setTimeout(()=>f.remove(),800);
+        if(save.sound){try{const C=window.AudioContext||window.webkitAudioContext;const c=new C(),o=c.createOscillator(),g=c.createGain();o.frequency.value=160+Math.min(500,save.combo*15);g.gain.value=.035;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.045);}catch(e){}}
+        clearTimeout(comboTimer);comboTimer=setTimeout(()=>{save.combo=1;update();},1000);
+        update();
+    }
+    function renderAchievements(){
+        const a=[
+            [save.clicks>=1,"First Click"],[save.clicks>=100,"100 Clicks"],[save.points>=1000,"1,000 HEF"],[save.points>=10000,"10,000 HEF"],[save.combo>=10,"Combo x10"],[save.auto>=10,"HEF Factory"]
+        ];
+        const n=a.filter(x=>x[0]).length;$("hcAchievements").textContent=n+" / "+a.length;
+        const last=a.filter(x=>x[0]).pop();$("hcAchievementText").textContent=last?"Unlocked: "+last[1]:"Start clicking...";
+    }
+    $("hcHefetus").onclick=clickHefetus;
+    $("hcReset").onclick=()=>{
+        if(confirm("Reset Hef Clicker for this session?")){
+            save={points:0,best:0,power:1,auto:0,clicks:0,combo:1,last:0,sound:save.sound,owned:{power:0,auto:0,mega:0}};
+            update();
+        }
+    };
+    $("hcSound").onclick=()=>{save.sound=!save.sound;$("hcSound").textContent=save.sound?"🔊 Sound":"🔇 Sound";};
+    setInterval(()=>{if(save.auto>0){save.points+=save.auto;save.best=Math.max(save.best,save.points);if(save.points>=100000)unlockDisc02();update();persist();}},1000);
+    update();
+}
+
+/* =========================================================
+   GAMES — TETRIS
+========================================================= */
+function openGames(){
+    // Games is a real virtual Explorer path, just like New Folder.
+    openExplorer();
+    setTimeout(()=>renderExplorer("games"),30);
+}
+
+function openTetris(){
+    createWindow(
+        "tetris",
+        "Tetris",
+        "./assets/images/tetris.ico",
+        500,
+        650,
+        `
+        <div class="tetrisApp">
+            <div class="tetrisBoardWrap">
+                <canvas id="tetrisCanvas" width="300" height="600"></canvas>
+            </div>
+            <div class="tetrisSide">
+                <div class="tetrisTitle">TETRIS</div>
+                <div class="tetrisStat"><span>Score</span><b id="tetrisScore">0</b></div>
+                <div class="tetrisStat"><span>Lines</span><b id="tetrisLines">0</b></div>
+                <div class="tetrisStat"><span>Level</span><b id="tetrisLevel">1</b></div>
+                <div class="tetrisNextLabel">NEXT</div>
+                <canvas id="tetrisNext" width="120" height="120"></canvas>
+                <button class="winButton tetrisBtn" id="tetrisPause">Pause</button>
+                <button class="winButton tetrisBtn" id="tetrisRestart">New Game</button>
+                <div class="tetrisControls">← → Move<br>↑ Rotate<br>↓ Soft drop<br>Space Hard drop<br>P Pause</div>
+            </div>
+        </div>
+        `
+    );
+    setupTetris();
+}
+
+function setupTetris(){
+    if(!document.getElementById("tetrisCanvas")) return;
+    if(!document.getElementById("tetrisStyles")){
+        const st=document.createElement("style");
+        st.id="tetrisStyles";
+        st.textContent=`
+        .tetrisApp{height:100%;display:flex;gap:14px;padding:12px;background:linear-gradient(#edf5fc,#cbddec);font-family:"Segoe UI",Tahoma,sans-serif;color:#18344d;box-sizing:border-box}
+        .tetrisBoardWrap{background:#15202b;border:1px solid #7890a4;box-shadow:inset 0 0 0 2px #071019,0 2px 5px #7890a4;padding:4px;height:max-content}
+        #tetrisCanvas{display:block;width:300px;height:600px;background:#0b1118}
+        .tetrisSide{width:145px;display:flex;flex-direction:column;align-items:stretch;gap:8px}.tetrisTitle{font-size:24px;font-weight:700;text-align:center;text-shadow:0 1px #fff}.tetrisStat{display:flex;justify-content:space-between;padding:6px 8px;background:linear-gradient(#fff,#dce9f3);border:1px solid #9bb1c4;border-radius:3px}.tetrisNextLabel{font-weight:600;text-align:center;margin-top:4px}.tetrisSide #tetrisNext{align-self:center;background:#0b1118;border:1px solid #7890a4}.tetrisBtn{width:100%;padding:6px}.tetrisControls{font-size:11px;line-height:1.65;padding:8px;background:rgba(255,255,255,.55);border:1px solid #a8bbc9;border-radius:3px}
+        `;
+        document.head.appendChild(st);
+    }
+    const canvas=document.getElementById("tetrisCanvas"), ctx=canvas.getContext("2d");
+    const nextCanvas=document.getElementById("tetrisNext"), nctx=nextCanvas.getContext("2d");
+
+    // Tiny synthesized 8-bit sound effects. No external audio files are needed.
+    let tetrisAudioCtx=null;
+    function tetrisAudio(){
+        if(!tetrisAudioCtx) tetrisAudioCtx=new (window.AudioContext||window.webkitAudioContext)();
+        if(tetrisAudioCtx.state==="suspended") tetrisAudioCtx.resume();
+        return tetrisAudioCtx;
+    }
+    function tetrisBeep(freq,duration=.055,volume=.035,when=0){
+        try{
+            const ac=tetrisAudio(),now=ac.currentTime+when;
+            const o=ac.createOscillator(),g=ac.createGain();
+            o.type="square"; o.frequency.setValueAtTime(freq,now);
+            g.gain.setValueAtTime(volume,now);
+            g.gain.exponentialRampToValueAtTime(.0001,now+duration);
+            o.connect(g); g.connect(ac.destination); o.start(now); o.stop(now+duration);
+        }catch(e){}
+    }
+    function tetrisSound(name){
+        if(name==="move") tetrisBeep(220,.035,.022);
+        else if(name==="rotate") tetrisBeep(440,.045,.028);
+        else if(name==="drop") { tetrisBeep(165,.045,.03); tetrisBeep(110,.07,.022,.035); }
+        else if(name==="line") { tetrisBeep(660,.07,.032); tetrisBeep(880,.09,.032,.07); tetrisBeep(1047,.12,.032,.14); }
+        else if(name==="level") { tetrisBeep(523,.06,.03); tetrisBeep(659,.06,.03,.06); tetrisBeep(784,.11,.03,.12); }
+        else if(name==="gameover") { tetrisBeep(330,.12,.035); tetrisBeep(247,.12,.035,.12); tetrisBeep(165,.22,.035,.24); }
+    }
+    const COLS=10, ROWS=20, S=30;
+    const colors=[null,"#00d8e8","#2468ff","#ff8c18","#ffe033","#35c85a","#a855f7","#ef4056"];
+    const shapes=[null,[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],[[2,0,0],[2,2,2],[0,0,0]],[[0,0,3],[3,3,3],[0,0,0]],[[4,4],[4,4]],[[0,5,5],[5,5,0],[0,0,0]],[[0,6,0],[6,6,6],[0,0,0]],[[7,7,0],[0,7,7],[0,0,0]]];
+    let board, piece, next, score, lines, level, dropCounter, lastTime, paused, over, raf;
+    function newBoard(){return Array.from({length:ROWS},()=>Array(COLS).fill(0));}
+    function clone(m){return m.map(r=>r.slice());}
+    function randomPiece(){const type=1+Math.floor(Math.random()*7);return {type,matrix:clone(shapes[type]),x:Math.floor(COLS/2)-Math.ceil(shapes[type][0].length/2),y:0};}
+    function collide(p){for(let y=0;y<p.matrix.length;y++)for(let x=0;x<p.matrix[y].length;x++)if(p.matrix[y][x]&&(p.y+y>=ROWS||p.x+x<0||p.x+x>=COLS||board[p.y+y][p.x+x]))return true;return false;}
+    function merge(){pLoop:for(let y=0;y<piece.matrix.length;y++)for(let x=0;x<piece.matrix[y].length;x++)if(piece.matrix[y][x])board[piece.y+y][piece.x+x]=piece.matrix[y][x];}
+    function rotateMatrix(m){return m[0].map((_,i)=>m.map(r=>r[i]).reverse());}
+    function rotate(){const old=piece.matrix;piece.matrix=rotateMatrix(piece.matrix);if(collide(piece)){piece.x++;if(collide(piece)){piece.x-=2;if(collide(piece))piece.x++;}}else tetrisSound("rotate");}
+    function move(dx){piece.x+=dx;if(collide(piece))piece.x-=dx;else tetrisSound("move");}
+    function playTetrisTada(){
+        try{
+            const a=new Audio("./assets/sounds/tada.wav");
+            a.volume=.65;
+            a.play().catch(()=>{});
+        }catch(e){}
+    }
+    function drop(){
+        // Every press of the Down key gives an immediate soft-drop sound.
+        tetrisSound("drop");
+        piece.y++;
+        if(collide(piece)){
+            piece.y--;
+            merge();
+            if(clearLines()) return;
+            piece=next;
+            next=randomPiece();
+            if(collide(piece)){over=true;tetrisSound("gameover");}
+        }
+        dropCounter=0;
+    }
+    function hardDrop(){
+        let d=0;
+        while(!collide(piece)){piece.y++;d++;}
+        piece.y--;
+        score+=Math.max(0,d-1)*2;
+        drop();
+        updateStats();
+    }
+    function clearLines(){
+        let cleared=0;
+        outer:for(let y=ROWS-1;y>=0;y--){
+            for(let x=0;x<COLS;x++)if(!board[y][x])continue outer;
+            board.splice(y,1);
+            board.unshift(Array(COLS).fill(0));
+            cleared++;
+            y++;
+        }
+        if(cleared){
+            const oldLevel=level;
+            lines+=cleared;
+            score+=[0,100,300,500,800][cleared]*level;
+            level=1+Math.floor(lines/10);
+            tetrisSound("line");
+            if(level>oldLevel)tetrisSound("level");
+
+            // Reaching level 2 triggers the Windows-style tada sound,
+            // resets the Tetris panel/game state, and immediately continues.
+            if(oldLevel<2 && level>=2){
+                playTetrisTada();
+                reset();
+                return true;
+            }
+        }
+        updateStats();
+        return false;
+    }
+    function drawCell(c,x,y,size=S){ctx.fillStyle=colors[c];ctx.fillRect(x*size,y*size,size,size);ctx.strokeStyle="rgba(255,255,255,.28)";ctx.strokeRect(x*size+.5,y*size+.5,size-1,size-1);}
+    function draw(){ctx.fillStyle="#0b1118";ctx.fillRect(0,0,canvas.width,canvas.height);for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++)if(board[y][x])drawCell(board[y][x],x,y);if(piece&&!over){for(let y=0;y<piece.matrix.length;y++)for(let x=0;x<piece.matrix[y].length;x++)if(piece.matrix[y][x])drawCell(piece.matrix[y][x],piece.x+x,piece.y+y);}drawNext();if(paused||over){ctx.fillStyle="rgba(0,0,0,.68)";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#fff";ctx.font="bold 28px Segoe UI";ctx.textAlign="center";ctx.fillText(over?"GAME OVER":"PAUSED",150,285);ctx.font="14px Segoe UI";ctx.fillText(over?"Press New Game":"Press P to resume",150,315);}}
+    function drawNext(){nctx.fillStyle="#0b1118";nctx.fillRect(0,0,120,120);const m=next.matrix,size=24,ox=Math.floor((5-m[0].length)/2),oy=Math.floor((5-m.length)/2);for(let y=0;y<m.length;y++)for(let x=0;x<m[y].length;x++)if(m[y][x]){nctx.fillStyle=colors[next.type];nctx.fillRect((ox+x)*size,(oy+y)*size,size,size);nctx.strokeStyle="rgba(255,255,255,.28)";nctx.strokeRect((ox+x)*size+.5,(oy+y)*size+.5,size-1,size-1);}}
+    function updateStats(){document.getElementById("tetrisScore").textContent=score.toLocaleString();document.getElementById("tetrisLines").textContent=lines;document.getElementById("tetrisLevel").textContent=level;}
+    function reset(){board=newBoard();piece=randomPiece();next=randomPiece();score=0;lines=0;level=1;dropCounter=0;lastTime=performance.now();paused=false;over=false;updateStats();}
+    function togglePause(){if(over)return;paused=!paused;document.getElementById("tetrisPause").textContent=paused?"Resume":"Pause";draw();}
+    function loop(time){if(!document.getElementById("tetrisCanvas")){cancelAnimationFrame(raf);return;}const dt=time-lastTime;lastTime=time;if(!paused&&!over){dropCounter+=dt;const interval=Math.max(90,800-(level-1)*65);if(dropCounter>interval)drop();}draw();raf=requestAnimationFrame(loop);}
+    document.getElementById("tetrisPause").onclick=togglePause;document.getElementById("tetrisRestart").onclick=()=>reset();
+    const key=e=>{if(!document.getElementById("tetrisCanvas"))return;const k=e.key.toLowerCase();if(["arrowleft","arrowright","arrowup","arrowdown"," "].includes(e.key)||k==="p")e.preventDefault();if(k==="p"){togglePause();return;}if(paused||over)return;if(e.key==="ArrowLeft")move(-1);else if(e.key==="ArrowRight")move(1);else if(e.key==="ArrowUp")rotate();else if(e.key==="ArrowDown")drop();else if(e.key===" ")hardDrop();draw();};
+    document.addEventListener("keydown",key);
+    reset();draw();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
+}
+
+/* =========================================================
+   HEFGLES VIRUS
+========================================================= */
+
+function startHefglesVirus(page){
+
+    if(hefglesVirusRunning)
+        return;
+
+    hefglesVirusRunning=true;
+
+    page.innerHTML=`
+
+        <div id="hefglesVirusPage">
+
+            <div class="virusWarning">
+                HEFGLES.HU
+            </div>
+
+            <div class="virusHefetus">
+
+                <img
+                    src="./assets/images/hefetus.png"
+                    alt=""
+                >
+
+            </div>
+
+            <div class="virusText">
+                HEFETUS HAS ENTERED
+                YOUR COMPUTER
+            </div>
+
+            <div class="virusSmall">
+                DO NOT CLOSE THIS PAGE
+            </div>
+
+        </div>
+
+    `;
+
+    page.style.padding="0";
+    page.style.background="#000";
+    page.style.overflow="hidden";
+
+    startIconChaos();
+    startRainbowFlicker();
+}
+
+function startIconChaos(){
+
+    document
+        .querySelectorAll(
+            ".desktopIcon"
+        )
+        .forEach(icon=>{
+
+            icon.style.transition=
+                "transform .08s linear";
+
+            let x=
+                parseFloat(
+                    icon.style.left
+                )||20;
+
+            let y=
+                parseFloat(
+                    icon.style.top
+                )||20;
+
+            let vx=
+                (Math.random()*2)-1;
+
+            let vy=
+                (Math.random()*2)-1;
+
+            let rotation=0;
+
+            function move(){
+
+                if(!hefglesVirusRunning)
+                    return;
+
+                x+=vx;
+                y+=vy;
+
+                const maxX=
+                    desktop.clientWidth-
+                    icon.offsetWidth;
+
+                const maxY=
+                    desktop.clientHeight-
+                    icon.offsetHeight-
+                    48;
+
+                if(x<=0){
+
+                    x=0;
+                    vx=Math.abs(vx);
+
+                }
+
+                if(x>=maxX){
+
+                    x=maxX;
+                    vx=-Math.abs(vx);
+
+                }
+
+                if(y<=0){
+
+                    y=0;
+                    vy=Math.abs(vy);
+
+                }
+
+                if(y>=maxY){
+
+                    y=maxY;
+                    vy=-Math.abs(vy);
+
+                }
+
+                rotation+=1;
+
+                icon.style.left=
+                    x+"px";
+
+                icon.style.top=
+                    y+"px";
+
+                icon.style.transform=
+                    `rotate(${rotation}deg)`;
+
+                requestAnimationFrame(
+                    move
+                );
+            }
+
+            move();
+
+        });
+}
+
+function startRainbowFlicker(){
+
+    const overlay=
+        document.createElement(
+            "div"
+        );
+
+    overlay.id=
+        "hefglesRainbow";
+
+    desktop.appendChild(
+        overlay
+    );
+
+    hefglesRainbowTimer=
+        setInterval(()=>{
+
+            if(!hefglesVirusRunning)
+                return;
+
+            const hue=
+                Math.floor(
+                    Math.random()*360
+                );
+
+            const opacity=
+                .06+
+                Math.random()*.22;
+
+            overlay.style.background=
+                `hsla(
+                    ${hue},
+                    100%,
+                    50%,
+                    ${opacity}
+                )`;
+
+        },120);
+}
+
+function stopHefglesVirus(){
+
+    if(!hefglesVirusRunning)
+        return;
+
+    hefglesVirusRunning=false;
+
+    if(hefglesRainbowTimer){
+
+        clearInterval(
+            hefglesRainbowTimer
+        );
+
+        hefglesRainbowTimer=null;
+    }
+
+    const rainbow=
+        document.getElementById(
+            "hefglesRainbow"
+        );
+
+    if(rainbow)
+        rainbow.remove();
+
+    document
+        .querySelectorAll(
+            ".desktopIcon"
+        )
+        .forEach(icon=>{
+
+            icon.style.transform="";
+            icon.style.transition="";
+
+        });
+}
+
+/* =========================================================
+   RECYCLE BIN
+========================================================= */
+
+function openRecycle(){
+
+    createWindow(
+        "recycle",
+        "Recycle Bin",
+        trashItems.length
+            ? "./assets/images/full bin.ico"
+            : "./assets/images/empty recycle bin.ico",
+        620,
+        420,
+        `
+
+        <div class="recycleContents">
+
+            <div id="trashContents"></div>
+
+        </div>
+
+        `
+    );
+
+    refreshTrashWindow();
+}
+
+function refreshTrashWindow(){
+
+    updateRecycleBinIcon();
+
+    const area=
+        document.getElementById(
+            "trashContents"
+        );
+
+    if(!area)
+        return;
+
+    if(!trashItems.length){
+
+        area.innerHTML=
+            "<p>The Recycle Bin is empty.</p>";
+
+        return;
+    }
+
+    area.innerHTML="";
+
+    trashItems.forEach(
+        (item,index)=>{
+
+            const row=
+                document.createElement(
+                    "div"
+                );
+
+            row.className=
+                "fileRow";
+
+            row.innerHTML=`
+
+                <img
+                    src="${getTrashIcon(item.type)}"
+                    alt=""
+                >
+
+                <div style="flex:1">
+
+                    <strong>
+                        ${escapeHTML(item.name)}
+                    </strong>
+
+                </div>
+
+                <button
+                    class="winButton"
+                    onclick="restoreItem(${index})"
+                >
+                    Restore
+                </button>
+
+                <button
+                    class="winButton"
+                    onclick="deleteItem(${index})"
+                    style="margin-left:8px"
+                >
+                    Delete
+                </button>
+
+            `;
+
+            area.appendChild(
+                row
+            );
+        }
+    );
+}
+
+function getTrashIcon(type){
+
+    const icons={
+
+        computer:
+            "./assets/images/computer.ico",
+
+        notepad:
+            "./assets/images/notepad.ico",
+
+        paint:
+            "./assets/images/paint.ico",
+
+        calculator:
+            "./assets/images/calculator.ico",
+
+        music:
+            "./assets/images/music disk.ico",
+
+        browser:
+            "./assets/images/Internet Explorer.ico",
+
+        dvdmaker:
+            "./assets/images/optical drive.ico",
+
+        mediacenter:
+            "./assets/images/media center.png",
+
+        wordpad:
+            "./assets/images/WordPad.png",
+
+        sticky:
+            "./assets/images/Sticky Notes.png",
+
+        cmd:
+            "./assets/images/cmd.ico",
+
+        system:
+            "./assets/images/computer.ico",
+
+        hefetus:
+            "./assets/images/hefetus.png"
+    };
+
+    return icons[type] ||
+        "./assets/images/Windows 7 Folder Bronze.ico";
+}
+
+function updateRecycleBinIcon(){
+
+    const src=
+        trashItems.length
+        ? "./assets/images/full bin.ico"
+        : "./assets/images/empty recycle bin.ico";
+
+    const image=
+        document.getElementById(
+            "recycleImage"
+        );
+
+    if(image)
+        image.src=src;
+
+    const menu=
+        document.getElementById(
+            "menuRecycleImage"
+        );
+
+    if(menu)
+        menu.src=src;
+}
+
+function moveToTrash(icon){
+
+    if(
+        icon.id==="recycleIcon"
+    )
+        return;
+
+    const type=
+        icon.dataset.type||
+        "folder";
+
+    trashItems.push({
+
+        name:
+            icon.dataset.name||
+            "Item",
+
+        type:type,
+
+        html:
+            icon.outerHTML
+    });
+
+    icon.remove();
+
+    playSound(
+        "Windows Recycle",
+        .65
+    );
+
+    updateRecycleBinIcon();
+
+    showNotification(
+        "Item moved to Recycle Bin"
+    );
+
+    refreshTrashWindow();
+}
+
+function restoreItem(index){
+
+    if(diskDeleted){
+
+        diskError();
+
+        return;
+    }
+
+    const item=
+        trashItems[index];
+
+    if(!item)
+        return;
+
+    const wrapper=
+        document.createElement(
+            "div"
+        );
+
+    wrapper.innerHTML=
+        item.html;
+
+    const restored=
+        wrapper.firstElementChild;
+
+    restored.style.left="500px";
+    restored.style.top="180px";
+
+    desktop.appendChild(
+        restored
+    );
+
+    setupIconDragging(
+        restored
+    );
+
+    trashItems.splice(
+        index,
+        1
+    );
+
+    updateRecycleBinIcon();
+
+    refreshTrashWindow();
+
+    playSound(
+        "Windows Restore",
+        .55
+    );
+
+    showNotification(
+        "Item restored"
+    );
+}
+
+function deleteItem(index){
+
+    if(diskDeleted){
+
+        diskError();
+
+        return;
+    }
+
+    const item=
+        trashItems[index];
+
+    if(!item)
+        return;
+
+    trashItems.splice(
+        index,
+        1
+    );
+
+    updateRecycleBinIcon();
+
+    refreshTrashWindow();
+
+    if(
+        item.type==="hefetus"
+    ){
+
+        startHefetusDeletion();
+
+        return;
+    }
+
+    if(
+        item.type==="computer"
+    ){
+
+        computerDeletedShutdown();
+
+        return;
+    }
+
+    if(
+        item.type==="disk"
+    ){
+
+        diskDeletedFreeze();
+
+        return;
+    }
+
+    playSound(
+        "Windows Recycle",
+        .45
+    );
+
+    showNotification(
+        "Item permanently deleted"
+    );
+}
+
+/* =========================================================
+   HEFETUS DELETE CHAOS
+========================================================= */
+
+function startHefetusDeletion(){
+
+    if(chaosRunning)
+        return;
+
+    chaosRunning=true;
+
+    setTimeout(
+        beginChaosSequence,
+        5000
+    );
+}
+
+function beginChaosSequence(){
+
+    const chaos=
+        document.getElementById(
+            "hefetusChaos"
+        );
+
+    chaos.style.display=
+        "block";
+
+    createChaosPopup();
+
+    setTimeout(()=>{
+
+        let count=0;
+
+        const interval=
+            setInterval(()=>{
+
+                const amount=
+                    Math.min(
+                        1+
+                        Math.floor(
+                            count/2
+                        ),
+                        7
+                    );
+
+                for(
+                    let i=0;
+                    i<amount;
+                    i++
+                ){
+
+                    createChaosPopup();
+
+                }
+
+                count++;
+
+                if(count>=15){
+
+                    clearInterval(
+                        interval
+                    );
+
+                    coverScreenWithPopups();
+                }
+
+            },550);
+
+    },3000);
+}
+
+function createChaosPopup(){
+
+    const chaos=
+        document.getElementById(
+            "hefetusChaos"
+        );
+
+    const popup=
+        document.createElement(
+            "div"
+        );
+
+    popup.className=
+        "chaosPopup";
+
+    popup.style.left=
+        Math.random()*
+        Math.max(
+            5,
+            window.innerWidth-390
+        )+
+        "px";
+
+    popup.style.top=
+        Math.random()*
+        Math.max(
+            5,
+            window.innerHeight-175
+        )+
+        "px";
+
+    popup.innerHTML=`
+
+        <div class="chaosPopupTitle">
+        </div>
+
+        <div class="chaosPopupBody">
+            Did you just try to delete me?
+        </div>
+
+    `;
+
+    chaos.appendChild(
+        popup
+    );
+
+    playSound(
+        "error",
+        .45
+    );
+}
+
+function coverScreenWithPopups(){
+
+    for(
+        let i=0;
+        i<30;
+        i++
+    ){
+
+        createChaosPopup();
+
+    }
+
+    let waves=0;
+
+    const timer=
+        setInterval(()=>{
+
+            for(
+                let i=0;
+                i<6;
+                i++
+            ){
+
+                createChaosPopup();
+
+            }
+
+            waves++;
+
+            if(waves>=3){
+
+                clearInterval(
+                    timer
+                );
+
+                setTimeout(
+                    showHefetusShutdown,
+                    1600
+                );
+            }
+
+        },600);
+}
+
+function showHefetusShutdown(){
+
+    const chaos=
+        document.getElementById(
+            "hefetusChaos"
+        );
+
+    chaos.style.display="none";
+    chaos.innerHTML="";
+
+    shutdownComputer(
+        "hefetus.win7 shut down."
+    );
+}
+
+/* =========================================================
+   COMPUTER DELETE
+========================================================= */
+
+function computerDeletedShutdown(){
+
+    computerDeleted=true;
+
+    startMenu.classList.remove(
+        "open"
+    );
+
+    shutdownComputer(
+        "Windows is shutting down."
+    );
+}
+
+/* =========================================================
+   SHUTDOWN
+========================================================= */
+
+function shutdownComputer(message){
+
+    const screen=
+        document.getElementById(
+            "shutdownScreen"
+        );
+
+    const text=
+        document.getElementById(
+            "shutdownText"
+        );
+
+    screen.style.display="flex";
+
+    text.textContent=message;
+
+    playSound(
+        "Windows Shutdown",
+        .75
+    );
+
+    let dots=1;
+
+    const timer=
+        setInterval(()=>{
+
+            text.textContent=
+                message.replace(
+                    /\.*$/,
+                    ".".repeat(dots)
+                );
+
+            dots++;
+
+            if(dots>3)
+                dots=1;
+
+        },700);
+
+    setTimeout(()=>{
+
+        clearInterval(timer);
+
+    },7000);
+}
+
+document
+    .getElementById(
+        "shutdownButton"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            startMenu.classList.remove(
+                "open"
+            );
+
+            shutdownComputer(
+                "Windows is shutting down."
+            );
+        }
+    );
+
+/* =========================================================
+   DISK DELETE
+========================================================= */
+
+function diskDeletedFreeze(){
+
+    diskDeleted=true;
+
+    document
+        .querySelectorAll(
+            "audio"
+        )
+        .forEach(
+            audio=>{
+
+                try{
+                    audio.pause();
+                }catch(e){}
+
+            }
+        );
+
+    showNotification(
+        "Local Disk (C:) was deleted."
+    );
+}
+
+function diskError(){
+
+    if(!diskDeleted)
+        return;
+
+    const layer=
+        document.getElementById(
+            "diskErrorLayer"
+        );
+
+    layer.style.display="block";
+
+    const popup=
+        document.createElement(
+            "div"
+        );
+
+    popup.className=
+        "diskErrorPopup";
+
+    popup.style.left=
+        Math.random()*
+        Math.max(
+            5,
+            window.innerWidth-430
+        )+
+        "px";
+
+    popup.style.top=
+        Math.random()*
+        Math.max(
+            5,
+            window.innerHeight-170
+        )+
+        "px";
+
+    popup.innerHTML=`
+
+        <div class="diskErrorTitle">
+            Windows
+        </div>
+
+        <div class="diskErrorBody">
+            <strong>Disk not found</strong>
+            <br><br>
+            Error 0912
+        </div>
+
+    `;
+
+    layer.appendChild(
+        popup
+    );
+
+    playSound(
+        "error",
+        .75
+    );
+
+    setTimeout(()=>{
+
+        popup.remove();
+
+    },2500);
+}
+
+/* =========================================================
+   ICON DRAGGING
+========================================================= */
+
+function setupIconDragging(icon){
+
+    icon.addEventListener(
+        "mousedown",
+        e=>{
+
+            if(diskDeleted){
+
+                diskError();
+
+                e.preventDefault();
+
+                return;
+            }
+
+            if(e.button!==0)
+                return;
+
+            draggedIcon=icon;
+
+            const rect=
+                icon.getBoundingClientRect();
+
+            dragOffsetX=
+                e.clientX-rect.left;
+
+            dragOffsetY=
+                e.clientY-rect.top;
+
+            document
+                .querySelectorAll(
+                    ".desktopIcon"
+                )
+                .forEach(
+                    i=>{
+                        i.classList.remove(
+                            "selected"
+                        );
+                    }
+                );
+
+            icon.classList.add(
+                "selected"
+            );
+
+            icon.style.zIndex=
+                ++highestZ;
+
+            e.preventDefault();
+        }
+    );
+
+    icon.addEventListener(
+        "dblclick",
+        ()=>{
+
+            if(diskDeleted){
+
+                diskError();
+
+                return;
+            }
+
+            openWindow(
+                icon.dataset.type
+            );
+        }
+    );
+}
+
+document
+    .querySelectorAll(
+        ".desktopIcon"
+    )
+    .forEach(
+        setupIconDragging
+    );
+
+/* =========================================================
+   ICON MOVEMENT
+========================================================= */
+
+document.addEventListener(
+    "mousemove",
+    e=>{
+
+        if(!draggedIcon)
+            return;
+
+        if(diskDeleted){
+
+            draggedIcon=null;
+
+            return;
+        }
+
+        const rect=
+            desktop.getBoundingClientRect();
+
+        let x=
+            e.clientX-
+            rect.left-
+            dragOffsetX;
+
+        let y=
+            e.clientY-
+            rect.top-
+            dragOffsetY;
+
+        x=Math.max(
+            0,
+            Math.min(
+                x,
+                desktop.clientWidth-
+                draggedIcon.offsetWidth
+            )
+        );
+
+        y=Math.max(
+            0,
+            Math.min(
+                y,
+                desktop.clientHeight-
+                draggedIcon.offsetHeight-
+                48
+            )
+        );
+
+        draggedIcon.style.left=
+            x+"px";
+
+        draggedIcon.style.top=
+            y+"px";
+    }
+);
+
+/* =========================================================
+   DROP INTO RECYCLE BIN
+========================================================= */
+
+document.addEventListener(
+    "mouseup",
+    ()=>{
+
+        if(!draggedIcon)
+            return;
+
+        if(diskDeleted){
+
+            draggedIcon=null;
+
+            return;
+        }
+
+        const icon=
+            draggedIcon;
+
+        const ir=
+            icon.getBoundingClientRect();
+
+        const bin=
+            document.getElementById(
+                "recycleIcon"
+            );
+
+        const br=
+            bin.getBoundingClientRect();
+
+        const cx=
+            ir.left+
+            ir.width/2;
+
+        const cy=
+            ir.top+
+            ir.height/2;
+
+        if(
+            icon.id!=="recycleIcon" &&
+            cx>=br.left &&
+            cx<=br.right &&
+            cy>=br.top &&
+            cy<=br.bottom
+        ){
+
+            moveToTrash(
+                icon
+            );
+        }
+
+        icon.classList.remove(
+            "selected"
+        );
+
+        draggedIcon=null;
+    }
+);
+
+/* =========================================================
+   START MENU
+========================================================= */
+
+document
+    .getElementById(
+        "startOrb"
+    )
+    .addEventListener(
+        "click",
+        e=>{
+
+            e.stopPropagation();
+
+            if(diskDeleted){
+
+                diskError();
+
+                return;
+            }
+
+            startMenu.classList.toggle(
+                "open"
+            );
+
+            playSound(
+                "Open Start",
+                .3
+            );
+        }
+    );
+
+document
+    .querySelectorAll(
+        ".startItem[data-open]"
+    )
+    .forEach(
+        item=>{
+
+            item.addEventListener(
+                "click",
+                ()=>{
+
+                    openWindow(
+                        item.dataset.open
+                    );
+
+                    startMenu.classList.remove(
+                        "open"
+                    );
+                }
+            );
+        }
+    );
+
+/* =========================================================
+   CONTEXT MENU
+========================================================= */
+
+desktop.addEventListener(
+    "contextmenu",
+    e=>{
+
+        if(diskDeleted){
+
+            e.preventDefault();
+
+            diskError();
+
+            return;
+        }
+
+        if(
+            e.target.closest(
+                ".desktopIcon"
+            ) ||
+            e.target.closest(
+                ".window"
+            )
+        )
+            return;
+
+        e.preventDefault();
+
+        contextMenu.style.display=
+            "block";
+
+        let x=e.clientX;
+        let y=e.clientY;
+
+        if(
+            x+
+            contextMenu.offsetWidth>
+            window.innerWidth
+        ){
+
+            x=
+                window.innerWidth-
+                contextMenu.offsetWidth-
+                5;
+        }
+
+        if(
+            y+
+            contextMenu.offsetHeight>
+            window.innerHeight
+        ){
+
+            y=
+                window.innerHeight-
+                contextMenu.offsetHeight-
+                5;
+        }
+
+        contextMenu.style.left=
+            x+"px";
+
+        contextMenu.style.top=
+            y+"px";
+
+        playSound(
+            "Windows Menu Command",
+            .3
+        );
+    }
+);
+
+/* =========================================================
+   GLOBAL CLICK
+========================================================= */
+
+document.addEventListener(
+    "click",
+    e=>{
+
+        if(diskDeleted){
+
+            if(
+                !e.target.closest(
+                    ".diskErrorPopup"
+                )
+            ){
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                diskError();
+            }
+
+            return;
+        }
+
+        if(
+            !e.target.closest(
+                "#contextMenu"
+            )
+        ){
+
+            contextMenu.style.display=
+                "none";
+        }
+
+        if(
+            !e.target.closest(
+                "#startMenu"
+            ) &&
+            !e.target.closest(
+                "#startOrb"
+            )
+        ){
+
+            startMenu.classList.remove(
+                "open"
+            );
+        }
+    },
+    true
+);
+
+/* =========================================================
+   CONTEXT ACTIONS
+========================================================= */
+
+document
+    .getElementById(
+        "refreshDesktop"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            contextMenu.style.display=
+                "none";
+
+            showNotification(
+                "Desktop refreshed"
+            );
+        }
+    );
+
+document
+    .getElementById(
+        "newFolder"
+    )
+    .addEventListener(
+        "click",
+        createFolder
+    );
+
+document
+    .getElementById(
+        "openExplorerContext"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            contextMenu.style.display=
+                "none";
+
+            openExplorer();
+        }
+    );
+
+document
+    .getElementById(
+        "toggleIcons"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            document
+                .querySelectorAll(
+                    ".desktopIcon"
+                )
+                .forEach(
+                    icon=>{
+
+                        icon.style.display=
+                            icon.style.display===
+                            "none"
+                            ?
+                            "block"
+                            :
+                            "none";
+                    }
+                );
+
+            contextMenu.style.display=
+                "none";
+        }
+    );
+
+/* =========================================================
+   NEW FOLDER
+========================================================= */
+
+function createFolder(){
+
+    if(diskDeleted){
+
+        diskError();
+
+        return;
+    }
+
+    const folder=
+        document.createElement(
+            "div"
+        );
+
+    folder.className=
+        "desktopIcon";
+
+    folder.dataset.name=
+        "New Folder";
+
+    folder.dataset.type=
+        "folder";
+
+    folder.style.left="500px";
+    folder.style.top="180px";
+
+    folder.innerHTML=`
+
+        <img
+            src="./assets/images/Windows 7 Folder Bronze.ico"
+            alt=""
+        >
+
+        <span>
+            New Folder
+        </span>
+
+    `;
+
+    desktop.appendChild(
+        folder
+    );
+
+    setupIconDragging(
+        folder
+    );
+
+    contextMenu.style.display=
+        "none";
+
+    showNotification(
+        "New Folder created"
+    );
+}
+
+/* =========================================================
+   HEFETUS POPUP
+========================================================= */
+
+function showPopup(){
+    const hefetusErrorSound=new Audio("./assets/sounds/error.wav");
+    hefetusErrorSound.volume=.75;
+    hefetusErrorSound.play().catch(()=>{});
+
+    if(diskDeleted){
+
+        diskError();
+
+        return;
+    }
+
+    document
+        .getElementById(
+            "hefetusPopup"
+        )
+        .style.display=
+            "block";
+
+    playSound(
+        "Windows Pop-up Blocked",
+        .45
+    );
+}
+
+function closePopup(){
+
+    document
+        .getElementById(
+            "hefetusPopup"
+        )
+        .style.display=
+            "none";
+}
+
+/* =========================================================
+   COMMAND PROMPT
+========================================================= */
+
+function openCommandPrompt(){
+
+    createWindow(
+        "cmd",
+        "Command Prompt",
+        "./assets/images/cmd.ico",
+        650,
+        430,
+        `
+
+        <div class="cmdWindow">
+
+            <div
+                class="cmdOutput"
+                id="cmdOutput"
+            >Microsoft Windows [Version 6.1.7601]
+
+C:\\Users\\Hefetus092&gt;</div>
+
+            <div class="cmdInputRow">
+
+                <span class="cmdPrompt">
+                    C:\\Users\\Hefetus092&gt;
+                </span>
+
+                <input
+                    id="cmdInput"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+
+            </div>
+
+        </div>
+
+        `
+    );
+
+    setTimeout(
+        setupCommandPrompt,
+        50
+    );
+}
+
+function setupCommandPrompt(){
+
+    const input=
+        document.getElementById(
+            "cmdInput"
+        );
+
+    const output=
+        document.getElementById(
+            "cmdOutput"
+        );
+
+    if(!input||!output)
+        return;
+
+    input.focus();
+
+    input.addEventListener(
+        "keydown",
+        e=>{
+
+            if(e.key!=="Enter")
+                return;
+
+            const command=
+                input.value
+                    .trim();
+
+            output.innerHTML+=
+                "\nC:\\Users\\Hefetus092&gt; "+
+                escapeHTML(command);
+
+            if(
+                command.toLowerCase()===
+                "cmd alpha_1.2 disc new user hefetus092"
+            ){
+
+                output.innerHTML+=
+                    "\n\nDISC command accepted."+
+                    "\nNew user discovered: hefetus092"+
+                    "\nDISC_01 has been unlocked.";
+
+                unlockDisc();
+
+            }else if(command!==""){
+
+                output.innerHTML+=
+                    "\n'"+
+                    escapeHTML(command)+
+                    "' is not recognized as an internal or external command.";
+
+            }
+
+            output.scrollTop=
+                output.scrollHeight;
+
+            input.value="";
+        }
+    );
+}
+
+/* =========================================================
+   SECRET DISC
+========================================================= */
+
+function unlockDisc(){
+    if(window.disc01Unlocked) return;
+    window.disc01Unlocked=true;
+
+    refreshOpenExplorerDVD();
+    showNotification("DISC_01");
+    showDiscUnlockPopup("DISC_01");
+}
+
+function refreshOpenExplorerDVD(){
+    const win=getExplorerWindow && getExplorerWindow();
+    if(win && explorerCurrentPath==="dvd")
+        renderExplorer("dvd");
+}
+
+function showDiscUnlockPopup(name){
+    const old=document.getElementById("discUnlockPopup");
+    if(old) old.remove();
+
+    const popup=document.createElement("div");
+    popup.id="discUnlockPopup";
+    popup.className="win7DiscUnlock";
+    popup.innerHTML=`
+        <div class="win7DiscUnlockTitle">
+            <img src="./assets/images/optical drive.ico" alt="">
+            <span>Windows</span>
+            <button aria-label="Close">×</button>
+        </div>
+        <div class="win7DiscUnlockBody">
+            <img class="win7DiscUnlockIcon" src="./assets/images/optical drive.ico" alt="">
+            <div>
+                <strong>${escapeHTML(name)}</strong>
+                <p>${escapeHTML(name)} has been added to DVD Drive.</p>
+            </div>
+        </div>
+        <div class="win7DiscUnlockButtons"><button class="winButton">OK</button></div>
+    `;
+    document.body.appendChild(popup);
+    const close=()=>popup.remove();
+    popup.querySelector(".win7DiscUnlockTitle button").onclick=close;
+    popup.querySelector(".win7DiscUnlockButtons button").onclick=close;
+    playSound("Windows Default",.75);
+}
+
+function openDisc01(){
+
+    createWindow(
+        "disc01",
+        "DISC_01",
+        "./assets/images/optical drive.ico",
+        800,
+        520,
+        `
+
+        <div
+            style="
+                width:100%;
+                height:100%;
+                background:#000;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+            "
+        >
+
+            <video
+                src="./assets/videos/disc01.mov"
+                controls
+                autoplay
+                style="
+                    max-width:100%;
+                    max-height:100%;
+                "
+            ></video>
+
+        </div>
+
+        `
+    );
+}
+
+/* =========================================================
+   DISC_02 — 100,000 HEFPOINTS REWARD
+========================================================= */
+function unlockDisc02(){
+    if(window.disc02Unlocked) return;
+    window.disc02Unlocked=true;
+
+    refreshOpenExplorerDVD();
+    showNotification("DISC_02");
+    showDiscUnlockPopup("DISC_02");
+}
+
+function openDisc02(){
+    createWindow(
+        "disc02",
+        "DISC_02",
+        "./assets/images/optical drive.ico",
+        800,
+        520,
+        `<div style="width:100%;height:100%;background:#000;display:flex;align-items:center;justify-content:center">
+            <video src="./assets/videos/disc02.mov" controls autoplay style="max-width:100%;max-height:100%"></video>
+        </div>`
+    );
+}
+
+/* =========================================================
+   DISC ROUTER PATCH
+========================================================= */
+
+const originalOpenWindow=
+    openWindow;
+
+openWindow=function(type){
+
+    if(type==="disc01"){
+        openDisc01();
+        return;
+    }
+
+    if(type==="disc02"){
+        openDisc02();
+        return;
+    }
+
+    originalOpenWindow(type);
+};
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(text){
+
+    return String(text)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+/* =========================================================
+   PREVENT IMAGE DRAGGING
+========================================================= */
+
+document.addEventListener(
+    "dragstart",
+    e=>{
+
+        if(
+            e.target.tagName===
+            "IMG"
+        )
+            e.preventDefault();
+    }
+);
+
+console.log(
+    "hefetus.win7 initialized."
+);
+
+</script>
+
+</body>
+</html>
